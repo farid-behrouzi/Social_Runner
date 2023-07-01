@@ -439,8 +439,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPointsParent: {fileID: 1322983078}
-  tokenPrefab: {fileID: 2889511507623535635, guid: 99416084901d0433fb35fa4f09b7da51,
-    type: 3}
   tokenParent: {fileID: 2130577149}
   tokenPrefabList:
   - {fileID: 8192192345013932089, guid: 99416084901d0433fb35fa4f09b7da51, type: 3}
@@ -448,6 +446,8 @@ MonoBehaviour:
   - {fileID: -863535269399243640, guid: 6b9131468e65d457a8d51f2f4c527d1d, type: 3}
   - {fileID: -4087596388594522024, guid: 212c911fe9e1c4c0fad00569bd64ef3d, type: 3}
   - {fileID: -4123457327789643867, guid: c5240cf46093e4eeea44666ac4296a3c, type: 3}
+  tokenSpawnMinimumRate: 1
+  tokenSpawnMaximumRate: 3
 --- !u!4 &845028757
 Transform:
   m_ObjectHideFlags: 0

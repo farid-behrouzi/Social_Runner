@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,11 +7,15 @@ public class TokenSpawn : MonoBehaviour
 {
     [SerializeField] private Transform spawnPointsParent;
     private Transform[] spawnPointsArray;
-
-    [SerializeField] private Transform tokenPrefab;
+    
     [SerializeField] private Transform tokenParent;
 
     [SerializeField] private List<Token> tokenPrefabList;
+
+    [SerializeField] private float tokenSpawnMinimumRate;
+    [SerializeField] private float tokenSpawnMaximumRate;
+    private float spawnTimer;
+    private float spawnGap;
 
 
     private void Awake()
@@ -27,6 +30,7 @@ public class TokenSpawn : MonoBehaviour
 
     private void Update()
     {
+        SpawnTimer();
         if (Input.GetKeyDown(KeyCode.Z))
         {
             SpawnTokenTest(0);
@@ -63,10 +67,20 @@ public class TokenSpawn : MonoBehaviour
     {
         Vector3 tokenPosition = Vector3.zero;
         int randomPosIndex = Random.Range(0, spawnPointsArray.Length);
-        tokenPosition = spawnPointsArray[randomPosIndex].position;
+        tokenPosition = spawnPointsArray[randomPosIndex].transform.position;
 
-        Transform token = TokenPool.SpawnToken(tokenPrefab.gameObject, tokenPosition).transform;
+        GameObject tokenPrefab = tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
+        Transform token = TokenPool.SpawnToken(tokenPrefab, tokenPosition).transform;
         token.parent = tokenParent;
+
+        SwapWithLastIndex(randomPosIndex);
+        
+        randomPosIndex = Random.Range(0, spawnPointsArray.Length - 1);
+        tokenPosition = spawnPointsArray[randomPosIndex].transform.position;
+
+        GameObject secondTokenPrefab = tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
+        Transform secondToken = TokenPool.SpawnToken(secondTokenPrefab, tokenPosition).transform;
+        secondToken.parent = tokenParent;
 
     }
     
@@ -79,5 +93,35 @@ public class TokenSpawn : MonoBehaviour
         Transform token = TokenPool.SpawnToken(tokenPrefabList[index].gameObject, tokenPosition).transform;
         token.parent = tokenParent;
 
+    }
+
+    private void SpawnTimer()
+    {
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= spawnGap)
+        {
+            spawnTimer = 0;
+            SetNewSpawnGap();
+            SpawnToken();
+        }
+    }
+
+    private void SetNewSpawnGap()
+    {
+        spawnGap = Random.Range(tokenSpawnMinimumRate, tokenSpawnMaximumRate);
+    }
+    
+    private void SwapWithLastIndex(int index)
+    {
+        if (index < 0 || index >= spawnPointsArray.Length)
+        {
+            Debug.LogError("Invalid index!");
+            return;
+        }
+
+        // Swapping the value at the specified index with the last index
+        Transform temp = spawnPointsArray[index];
+        spawnPointsArray[index] = spawnPointsArray[spawnPointsArray.Length - 1];
+        spawnPointsArray[spawnPointsArray.Length - 1] = temp;
     }
 }
