@@ -185,6 +185,74 @@ Transform:
   m_Father: {fileID: 1322983078}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &329614615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 329614617}
+  - component: {fileID: 329614616}
+  m_Layer: 0
+  m_Name: GameData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &329614616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329614615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0dcd585fa20d457294f38f55c40ac11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rewardTableList:
+  - state: 0
+    triggerValue: 50
+    isTriggered: 0
+  - state: 1
+    triggerValue: 100
+    isTriggered: 0
+  - state: 0
+    triggerValue: 250
+    isTriggered: 0
+  - state: 2
+    triggerValue: 500
+    isTriggered: 0
+  - state: 0
+    triggerValue: 600
+    isTriggered: 0
+  - state: 0
+    triggerValue: 900
+    isTriggered: 0
+  - state: 3
+    triggerValue: 1200
+    isTriggered: 0
+  pointReductionRate: 1
+  pointReductionValue: 1
+--- !u!4 &329614617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329614615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &363453767
 GameObject:
   m_ObjectHideFlags: 0

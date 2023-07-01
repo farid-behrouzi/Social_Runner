@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,52 +7,65 @@ public class PlayerToken : MonoBehaviour
 
     private TrendStreakType playerTrendType;
     private List<Token> playerTokenList = new List<Token>();
-    private List<Token> playerPersuadingTrendList = new List<Token>();
-    private TokenTrend tokenTrend;
+    private PlayerTrendFollowState trendState;
+
+    public static Action<int> OnPlayerHitTokenPointUpdate;
 
 
-    private void Awake()
+    public void GrabTheToken(int ID, Token token)
     {
-        tokenTrend = GameObject.FindObjectOfType<TokenTrend>();
-    }
+        bool isTokenValidInFirstStreak = false;
+        bool isTokenValidInSecondStreak = false;
+        isTokenValidInFirstStreak = TokenTrend.instance.CheckThePlayerHitTokenInFirstStreak(ID, playerTokenList);
+        isTokenValidInSecondStreak = TokenTrend.instance.CheckThePlayerHitTokenInSecondStreak(ID, playerTokenList);
 
-    public void GrabTheToken(TrendStreakType type, int ID, Token token)
-    {
-        if (playerTokenList.Count == 0)
+        if (!isTokenValidInFirstStreak && !isTokenValidInSecondStreak)
         {
-            SetThePlayerCurrentTrendStreakList(ID);
-            return;
+            trendState = PlayerTrendFollowState.None;
+            playerTokenList = new List<Token>();
+        }
+        
+        if (isTokenValidInFirstStreak && isTokenValidInSecondStreak)
+        {
+            trendState = PlayerTrendFollowState.All;
         }
 
-        if (IsGrabbedTokenValid(ID))
+        if (isTokenValidInFirstStreak && !isTokenValidInSecondStreak)
         {
-            playerTokenList.Add(token);
+            if (trendState == PlayerTrendFollowState.Trend2)
+            {
+                trendState = PlayerTrendFollowState.Trend1;   
+                playerTokenList = new List<Token>();
+            }
         }
-    }
-
-
-
-    private void SetThePlayerCurrentTrendStreakList(int ID)
-    {
-        playerPersuadingTrendList = tokenTrend.WhatIsTheFirstToken(ID);
-        if (playerPersuadingTrendList == null)
+        
+        if (!isTokenValidInFirstStreak && isTokenValidInSecondStreak)
         {
-            return;
+            if (trendState == PlayerTrendFollowState.Trend1)
+            {
+                trendState = PlayerTrendFollowState.Trend2;   
+                playerTokenList = new List<Token>();
+            }
         }
-        playerTokenList.Add(playerPersuadingTrendList[0]);
+        
+        playerTokenList.Add(token);
+        
+        OnPlayerHitTokenPointUpdate?.Invoke(playerTokenList.Count);
     }
 
-    private bool IsGrabbedTokenValid(int ID)
+    private void GrabbedTheCorrectToken()
     {
-        return playerPersuadingTrendList[playerTokenList.Count].GetID() == ID;
+        
     }
+    
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("Token"))
         {
             Token token = other.gameObject.GetComponent<Token>();
-            GrabTheToken(token.GetTokenType(), token.GetID(), token);
+            GrabTheToken(token.GetID(), token);
+            Debug.Break();
         }
     }
     

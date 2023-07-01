@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class TokenTrend : MonoBehaviour
 {
+
+    public static TokenTrend instance;
+    
     [SerializeField] private Transform[] tokenArray;
 
     [SerializeField] private int streakLengthMinimum;
@@ -23,6 +27,18 @@ public class TokenTrend : MonoBehaviour
     
     private float firstTrendStreakTimer;
     private float secondTrendStreakTimer;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
 
     private void Start()
@@ -138,6 +154,33 @@ public class TokenTrend : MonoBehaviour
             }
         }
         token.SetTokenType(TrendStreakType.None);
+    }
+
+    public bool CheckThePlayerHitTokenInFirstStreak(int tokenID, List<Token> playerTokenList)
+    {
+
+        for (int i = 0; i < playerTokenList.Count; i++)
+        {
+            if (playerTokenList[i].GetID() != firstTrendStreakList[i].GetID())
+            {
+                return false;
+            }
+        }
+
+        return firstTrendStreakList[playerTokenList.Count].GetID() == tokenID;
+    }
+    
+    public bool CheckThePlayerHitTokenInSecondStreak(int tokenID, List<Token> playerTokenList)
+    {
+        for (int i = 0; i < playerTokenList.Count; i++)
+        {
+            if (playerTokenList[i].GetID() != secondTrendStreakList[i].GetID())
+            {
+                return false;
+            }
+        }
+
+        return secondTrendStreakList[playerTokenList.Count].GetID() == tokenID;
     }
     
 }
