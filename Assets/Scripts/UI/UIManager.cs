@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreTMP = null;
     [SerializeField] private StreakUI trendLeft = null;
     [SerializeField] private StreakUI trendRight = null;
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private string fadeTriggerLabel = "ClearView";
 
 
     private void OnEnable()
@@ -24,7 +26,10 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-
+        if (animator == null && !this.gameObject.TryGetComponent(out animator))
+        {
+            Debug.LogError("no animator found in UI manager");
+        }
     }
 
     private void PopScore(int _score, Vector3 _position)
@@ -38,41 +43,53 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    #region Test
-    /// ----------------- TEST -----------------
+    #region Public Methods
+
     public void Ping(string label)
     {
         EventManager.Call_OnPing(label);
     }
 
-    public void CreateDummyLeftTrend()
+    public void CreatetTrend(TrendStreakType _type, List<Light> _lights)
     {
-        List<Light> newLights = new();
-        for ( int i = 0; i < 3; i++)
+        switch (_type)
         {
-            Light l = new();
-            switch (i)
-            {
-                case 0:
-                    l.color = Color.green;
-                    break;
-                case 1:
-                    l.color = Color.red;
-                    break;
-                case 2:
-                    l.color = Color.blue;
-                    break;
-                default:
-                    break;
-            }
-            newLights.Add(l);
+            case TrendStreakType.Type1:
+            default:
+                trendLeft.CreateNewStreak(_lights);
+                break;
+            case TrendStreakType.Type2:
+                trendRight.CreateNewStreak(_lights);
+                break;
         }
-        trendLeft.CreateNewStreak(newLights);
     }
 
-    public void TurnLeftTrendLight(int _id)
+    public void TurnTrendLight(TrendStreakType _type, int _id)
     {
-        trendLeft.TurnLight(_id);
+        switch (_type)
+        {
+            case TrendStreakType.Type1:
+            default:
+                trendLeft.TurnLight(_id);
+                break;
+            case TrendStreakType.Type2:
+                trendRight.TurnLight(_id);
+                break;
+        }
+        
+    }
+
+    public void Score(int _rewardAmount)
+    {
+
+    }
+
+    public void FadeAway()
+    {
+        if (animator)
+        {
+            animator.SetTrigger(fadeTriggerLabel);
+        }
     }
     #endregion
 }
