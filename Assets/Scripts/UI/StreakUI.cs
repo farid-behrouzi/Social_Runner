@@ -53,10 +53,18 @@ public class StreakUI : MonoBehaviour
 
     public void TurnLight(int index)
     {
-        if (lightsUI[index] != null && !lightsUI[index].IsOn)
+        if (index < lightsUI.Count)
         {
-            lightsUI[index].TurnOn(true);
+            if (lightsUI[index] != null && !lightsUI[index].IsOn)
+            {
+                lightsUI[index].TurnOn(true);
+            }
         }
+        else
+        {
+            Debug.LogError("number of light UI elements (" + lightsUI.Count.ToString() + ") is less than index: " + index.ToString());
+        }
+        
     }
 
     public void Reset(bool isWon)
