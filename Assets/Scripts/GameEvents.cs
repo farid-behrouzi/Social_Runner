@@ -1,27 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class GameEvents : MonoBehaviour
+public class GameEvents
 {
-    public static GameEvents instance;
 
-    public Action<int> OnPlayerHitToken;
+    public static Action<TrendStreakType, int> OnPlayerHitTokenUIUpdate;
+    public static Action<TrendStreakType, List<Light>> OnCreateTrendUIUpdate;
+    public static Action<TrendStreakType, bool> OnResetTrendUIUpdate;
+    
 
-    private void Awake()
+    public static void PlayerHitToken(TrendStreakType trendType, int tokenID)
     {
-        if (instance)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        OnPlayerHitTokenUIUpdate?.Invoke(trendType, tokenID);
     }
-    
-    
-    
-    
+
+    public static void CreateTrendUIUpdate(TrendStreakType trendType, List<Light> lights)
+    {
+        OnCreateTrendUIUpdate?.Invoke(trendType, lights);
+    }
+
+    public static void ResetTrendUIUpdate(TrendStreakType trendType)
+    {
+        OnResetTrendUIUpdate?.Invoke(trendType, false);
+    }
+
 }

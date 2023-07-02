@@ -19,9 +19,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform debugPanel = null;
 
 
-    private void OnEnable()
+    private void Start()
     {
-
+        GameEvents.OnPlayerHitTokenUIUpdate += TurnTrendLight;
+        GameEvents.OnCreateTrendUIUpdate += CreatetTrend;
+        GameEvents.OnResetTrendUIUpdate += ResetTrend;
     }
     private void OnDisable()
     {
@@ -68,6 +70,7 @@ public class UIManager : MonoBehaviour
 
     public void CreatetTrend(TrendStreakType _type, List<Light> _lights)
     {
+        ClearTrend(_type);
         switch (_type)
         {
             case TrendStreakType.Type1:
@@ -82,6 +85,9 @@ public class UIManager : MonoBehaviour
 
     public void TurnTrendLight(TrendStreakType _type, int _id)
     {
+        Debug.Log("F@rid=> id: " + _id);
+        Debug.Log("TurnTrendLight");
+        
         switch (_type)
         {
             case TrendStreakType.Type1:

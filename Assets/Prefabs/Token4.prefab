@@ -124,3 +124,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 4
+  color: {r: 0.13333334, g: 0.49803925, b: 0.18039216, a: 1}

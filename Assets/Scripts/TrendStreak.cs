@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TrendStreak : MonoBehaviour
@@ -8,6 +9,9 @@ public class TrendStreak : MonoBehaviour
     private float lifeTime;
     private TokenTrend tokenTrend;
     private TrendStreakType type;
+    private List<Token> tokenList = new List<Token>();
+    private List<Light> uiLightsList = new List<Light>();
+
 
     private void Start()
     {
@@ -47,6 +51,25 @@ public class TrendStreak : MonoBehaviour
     public void SetTokeTrend(TokenTrend tokenTrend)
     {
         this.tokenTrend = tokenTrend;
+    }
+
+    public void SetTokenList(List<Token> tokenList)
+    {
+        this.tokenList = tokenList;
+
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        foreach (Token token in tokenList)
+        {
+            Light newLight = new Light(){id = token.GetID(), color = token.GetColor()};
+            uiLightsList.Add(newLight);
+        }
+        
+        Debug.Log("UpdateUI");
+        GameEvents.CreateTrendUIUpdate(type, uiLightsList);
     }
 
     private void DistroyItself()

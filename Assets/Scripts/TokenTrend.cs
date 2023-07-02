@@ -72,6 +72,7 @@ public class TokenTrend : MonoBehaviour
         trendStreak.SetLifeTime(firstTrendStreakLifeTime);
         trendStreak.SetTokenType(TrendStreakType.Type1);
         trendStreak.SetTokeTrend(this);
+        trendStreak.SetTokenList(firstTrendStreakList);
     }
     
     public void GenerateSecondTokenStreak()
@@ -83,6 +84,7 @@ public class TokenTrend : MonoBehaviour
         trendStreak.SetLifeTime(secondTrendStreakLifeTime);
         trendStreak.SetTokenType(TrendStreakType.Type2);
         trendStreak.SetTokeTrend(this);
+        trendStreak.SetTokenList(secondTrendStreakList);
     }
     
     private void GenerateTokenStreak(List<Token> tokenStreakList)
@@ -171,11 +173,6 @@ public class TokenTrend : MonoBehaviour
             }
         }
 
-        if (firstTrendStreakList.Count == playerTokenList.Count + 1)
-        {
-            OnFirstTokenStreakCompleted?.Invoke();
-        }
-
         return firstTrendStreakList[playerTokenList.Count].GetID() == tokenID;
     }
     
@@ -188,13 +185,32 @@ public class TokenTrend : MonoBehaviour
                 return false;
             }
         }
-        
-        if (secondTrendStreakList.Count == playerTokenList.Count + 1)
-        {
-            OnSecondTokenStreakCompleted?.Invoke();
-        }
 
         return secondTrendStreakList[playerTokenList.Count].GetID() == tokenID;
+    }
+
+    public bool IsTrendCompleted(TrendStreakType trendType, List<Token> playerTokenList)
+    {
+
+        switch (trendType)
+        {
+            case TrendStreakType.Type1:
+                if (firstTrendStreakList.Count == playerTokenList.Count + 1)
+                {
+                    OnFirstTokenStreakCompleted?.Invoke();
+                    return true;
+                }
+                break;
+            case TrendStreakType.Type2:
+                if (secondTrendStreakList.Count == playerTokenList.Count + 1)
+                {
+                    OnSecondTokenStreakCompleted?.Invoke();
+                    return true;
+                }
+                break;
+        }
+
+        return false;
     }
     
 }
