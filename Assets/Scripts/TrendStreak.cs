@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TrendStreak : MonoBehaviour
@@ -7,6 +8,19 @@ public class TrendStreak : MonoBehaviour
     private float lifeTime;
     private TokenTrend tokenTrend;
     private TrendStreakType type;
+
+    private void Start()
+    {
+        switch (type)
+        {
+            case TrendStreakType.Type1:
+                tokenTrend.OnFirstTokenStreakCompleted += DistroyItself;
+                break;
+            case TrendStreakType.Type2:
+                tokenTrend.OnSecondTokenStreakCompleted += DistroyItself;
+                break;
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -35,9 +49,17 @@ public class TrendStreak : MonoBehaviour
         this.tokenTrend = tokenTrend;
     }
 
+    private void DistroyItself()
+    {
+        Destroy(gameObject);
+    }
+
 
     private void OnDestroy()
     {
+        tokenTrend.OnFirstTokenStreakCompleted -= DistroyItself;
+        tokenTrend.OnSecondTokenStreakCompleted -= DistroyItself;
+        
         switch (type)
         {
             case TrendStreakType.Type1:

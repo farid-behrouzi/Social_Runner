@@ -15,8 +15,11 @@ public class GameData : MonoBehaviour
 
     private PlayerBadgeState playerBadgeState;
 
+    private bool rivalSnapshotPermission = false;
+
     private void Awake()
     {
+        playerBadgeState = PlayerBadgeState.None;
         basePoints = new Dictionary<int, int>();
         basePoints.Add(3, 20);
         basePoints.Add(4, 50);
@@ -38,6 +41,12 @@ public class GameData : MonoBehaviour
         if (basePoints.ContainsKey(tokenCount))
         {
             playerPoint += basePoints[tokenCount];
+            CheckRewardState();
+        }
+
+        if (playerPoint > 50)
+        {
+            rivalSnapshotPermission = true;
         }
     }
 
@@ -48,40 +57,78 @@ public class GameData : MonoBehaviour
         {
             if (item.state != RewardTable.RivalSnapshot)
             {
+                Debug.Log("CheckRewardState: " + item.triggerValue);
                 if (playerPoint > item.triggerValue && !item.isTriggered)
                 {
-                    GrantBadge(item.state);
+                    GrantBadge();
                     item.isTriggered = true;
                 }   
             }
         }
     }
 
-    private void GrantBadge(RewardTable state)
+    private void GrantBadge()
     {
-        
+        Debug.Log("GrantBadge");
+        switch (playerBadgeState)
+        {
+            case PlayerBadgeState.Badge2:
+                playerBadgeState = PlayerBadgeState.Badge3;
+                break;
+            case PlayerBadgeState.Badge1:
+                playerBadgeState = PlayerBadgeState.Badge2;
+                break;
+            case PlayerBadgeState.None:
+                playerBadgeState = PlayerBadgeState.Badge1;
+                break;
+        }
     }
 
     private void AttentionPointReduction()
     {
         playerPoint -= pointReductionValue;
+        if (playerPoint < 0)
+        {
+            playerPoint = 0;
+        }
 
-        CheckRivalSnapShot();
+        CheckReductionSituation();
     }
 
-    private void CheckRivalSnapShot()
+    private void CheckReductionSituation()
     {
         foreach (RewardTableInfo item in rewardTableList)
         {
-            if (item.state == RewardTable.RivalSnapshot)
+            if (item.state == RewardTable.RivalSnapshot && rivalSnapshotPermission)
             {
                 if (playerPoint < item.triggerValue && !item.isTriggered)
                 {
                     ResetAllRivalSnapShotTriggers();
-                    
-                    GrantBadge(item.state);
                     item.isTriggered = true;
-                }   
+                }  
+                continue;
+            }
+
+            switch (item.state)
+            {
+                case RewardTable.Badge3:
+                    if (playerBadgeState == PlayerBadgeState.Badge3 && playerPoint < item.triggerValue)
+                    {
+                        playerBadgeState = PlayerBadgeState.Badge2;
+                    }
+                    break;
+                case RewardTable.Badge2:
+                    if (playerBadgeState == PlayerBadgeState.Badge2 && playerPoint < item.triggerValue)
+                    {
+                        playerBadgeState = PlayerBadgeState.Badge1;
+                    }
+                    break;
+                case RewardTable.Badge1:
+                    if (playerBadgeState == PlayerBadgeState.Badge1 && playerPoint < item.triggerValue)
+                    {
+                        playerBadgeState = PlayerBadgeState.None;
+                    }
+                    break;
             }
         }
     }

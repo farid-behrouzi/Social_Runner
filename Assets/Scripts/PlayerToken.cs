@@ -53,19 +53,13 @@ public class PlayerToken : MonoBehaviour
         OnPlayerHitTokenPointUpdate?.Invoke(playerTokenList.Count);
     }
 
-    private void GrabbedTheCorrectToken()
-    {
-        
-    }
-    
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("Token"))
         {
             Token token = other.gameObject.GetComponent<Token>();
             GrabTheToken(token.GetID(), token);
-            Debug.Break();
+            //Debug.Break();
         }
     }
     

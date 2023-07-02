@@ -28,6 +28,10 @@ public class TokenTrend : MonoBehaviour
     private float firstTrendStreakTimer;
     private float secondTrendStreakTimer;
 
+
+    public Action OnFirstTokenStreakCompleted;
+    public Action OnSecondTokenStreakCompleted;
+
     private void Awake()
     {
         if (instance == null)
@@ -167,6 +171,11 @@ public class TokenTrend : MonoBehaviour
             }
         }
 
+        if (firstTrendStreakList.Count == playerTokenList.Count + 1)
+        {
+            OnFirstTokenStreakCompleted?.Invoke();
+        }
+
         return firstTrendStreakList[playerTokenList.Count].GetID() == tokenID;
     }
     
@@ -178,6 +187,11 @@ public class TokenTrend : MonoBehaviour
             {
                 return false;
             }
+        }
+        
+        if (secondTrendStreakList.Count == playerTokenList.Count + 1)
+        {
+            OnSecondTokenStreakCompleted?.Invoke();
         }
 
         return secondTrendStreakList[playerTokenList.Count].GetID() == tokenID;
