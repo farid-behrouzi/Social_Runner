@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class StreakUI : MonoBehaviour
@@ -7,6 +8,10 @@ public class StreakUI : MonoBehaviour
     private List<TokenLightUI> lightsUI = new();
     [SerializeField] private TokenLightUI lightPrefab = null;
     [SerializeField] private RectTransform lightsContainer = null;
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private AudioSource audioSource = null;
+    [SerializeField] private AudioClip correctStreakSFX = null;
+    [SerializeField] private AudioClip wrongStreakSFX = null;
 
     public void CreateNewStreak(List<Light> _lights)
     {
@@ -51,6 +56,34 @@ public class StreakUI : MonoBehaviour
         if (lightsUI[index] != null && !lightsUI[index].IsOn)
         {
             lightsUI[index].TurnOn(true);
+        }
+    }
+
+    public void Reset(bool isWon)
+    {
+        if (animator)
+        {
+            animator.SetTrigger(isWon?"Right":"Wrong");
+        }
+        PlayStreakSFX(isWon);
+    }
+
+    private void PlayStreakSFX(bool won)
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            /// TODO: fetch Global volume settings
+            audioSource.volume = 1;
+            if(won && correctStreakSFX)
+            {
+                audioSource.clip = correctStreakSFX;
+            }
+            else if (!won && wrongStreakSFX)
+            {
+                audioSource.clip = wrongStreakSFX;
+            }
+            audioSource.Play();
         }
     }
 }

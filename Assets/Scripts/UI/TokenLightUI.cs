@@ -30,6 +30,10 @@ public class TokenLightUI : MonoBehaviour
         else if (frame)
         {
             frame.color = new Color(frame.color.r, frame.color.g, frame.color.b, state ? 1 : 0);
+            if (this.gameObject.TryGetComponent(out Pingable pinger))
+            {
+                pinger.Ping();
+            }
         }
         isOn = state;
     }
