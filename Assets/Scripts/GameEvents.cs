@@ -25,4 +25,14 @@ public class GameEvents
         OnResetTrendUIUpdate?.Invoke(trendType, false);
     }
 
+    public static void Call_OnFinishStreak(TrendStreakType trendType, bool result)
+    {
+        OnResetTrendUIUpdate?.Invoke(trendType, result);
+    }
+
+    public static void Call_OnNewTrend(TrendStreakType trendType, List<Light> lights)
+    {
+        OnCreateTrendUIUpdate?.Invoke(trendType, lights);
+    }
+
 }

@@ -13,8 +13,17 @@ public class StreakUI : MonoBehaviour
     [SerializeField] private AudioClip correctStreakSFX = null;
     [SerializeField] private AudioClip wrongStreakSFX = null;
 
+    private List<Light> nextQueue = null;
+
+    [SerializeField] private bool isAnimPlay = false;
+
     public void CreateNewStreak(List<Light> _lights)
     {
+        nextQueue = _lights;
+        if (isAnimPlay)
+        {
+            return;
+        }
         if (lightsContainer == null)
         {
             Debug.LogError("no lights container found");
@@ -36,6 +45,17 @@ public class StreakUI : MonoBehaviour
             tokenLight.SetLight(l);
         }
 
+    }
+
+    public void AnimFinish()
+    {
+        ClearStreak();
+        isAnimPlay = false;
+        if (nextQueue != null && nextQueue.Count > 0)
+        {
+            CreateNewStreak(nextQueue);
+            nextQueue.Clear();
+        }
     }
 
 
@@ -69,12 +89,18 @@ public class StreakUI : MonoBehaviour
 
     public void Reset(bool isWon)
     {
+        //if (animator && isWon)
+        //{
+        //    animator.SetTrigger("Right");
+        //}
         if (animator)
         {
-            animator.SetTrigger(isWon?"Right":"Wrong");
+            animator.SetTrigger(isWon ? "Right" : "Wrong");
         }
         PlayStreakSFX(isWon);
     }
+
+
 
     private void PlayStreakSFX(bool won)
     {
@@ -93,5 +119,10 @@ public class StreakUI : MonoBehaviour
             }
             audioSource.Play();
         }
+    }
+
+    public void SetAnimPlay()
+    {
+        isAnimPlay = true;
     }
 }

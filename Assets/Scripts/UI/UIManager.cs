@@ -19,15 +19,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform debugPanel = null;
 
 
-    private void Start()
+    private void OnEnable()
     {
         GameEvents.OnPlayerHitTokenUIUpdate += TurnTrendLight;
-        GameEvents.OnCreateTrendUIUpdate += CreatetTrend;
+        GameEvents.OnCreateTrendUIUpdate += SetTrend;
         GameEvents.OnResetTrendUIUpdate += ResetTrend;
     }
     private void OnDisable()
     {
-
+        GameEvents.OnPlayerHitTokenUIUpdate -= TurnTrendLight;
+        GameEvents.OnCreateTrendUIUpdate -= SetTrend;
+        GameEvents.OnResetTrendUIUpdate -= ResetTrend;
     }
 
     private void Awake()
@@ -63,12 +65,21 @@ public class UIManager : MonoBehaviour
 
     #region Public Methods
 
+    /// <summary>
+    /// pings the UI element on the scene visually if the label matches the pingable label
+    /// </summary>
+    /// <param name="label"></param>
     public void Ping(string label)
     {
         EventManager.Call_OnPing(label);
     }
 
-    public void CreatetTrend(TrendStreakType _type, List<Light> _lights)
+    /// <summary>
+    /// instantiate new trend lights UI elements based on given list of Lights
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <param name="_lights"></param>
+    public void SetTrend(TrendStreakType _type, List<Light> _lights)
     {
         ClearTrend(_type);
         switch (_type)
@@ -83,6 +94,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// highlights the lights with given id as index of the list
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <param name="_id"> index of the light in the list. 
+    /// if _id is 0 the first light will be highlighted and if 1 the second one ...</param>
     public void TurnTrendLight(TrendStreakType _type, int _id)
     {
         Debug.Log("F@rid=> id: " + _id);
@@ -100,6 +117,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// destroys the trend UI childs
+    /// </summary>
+    /// <param name="_type"></param>
     public void ClearTrend(TrendStreakType _type)
     {
         switch (_type)
@@ -113,6 +134,14 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// runs UI feedback based on the result(_won) of the streak
+    /// to clear the trend ui childs directly use ClearTrend(_type)
+    /// trend childs will be cleared automatically by setting a new trend
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <param name="_won">if true, trend UI gives a positive feedback and negative in case of fail</param>
     public void ResetTrend(TrendStreakType _type, bool _won = false)
     {
         switch (_type)
@@ -127,6 +156,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// updates UI score number and runs a popup to show the added amount
+    /// </summary>
+    /// <param name="totalScore">number to be shown as player's total score</param>
+    /// <param name="addedAmount">new added amount that has made the current total number</param>
     public void Score(int totalScore,int addedAmount = 0)
     {
         if (scoreTMP)
@@ -140,12 +174,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void FadeAway()
+    /// <summary>
+    /// runs in game menu UI wipe out animation 
+    /// </summary>
+    public void FadeUIAway()
     {
         if (animator)
         {
             animator.SetTrigger(fadeTriggerLabel);
         }
+    }
+
+    /// <summary>
+    /// updates the UI with the last streak feedback result and new set of lights for the next one
+    /// </summary>
+    /// <param name="_type">type1 : left trend panel, type2: right trend panel</param>
+    /// <param name="_OldResult">if True, UI gives a successful feedback regarding to the last streak</param>
+    /// <param name="_NewLights">new set of Light objects to create a new trend UI elements accordingly</param>
+    public void FinishOldStartNew(TrendStreakType _type, bool _OldResult, List<Light> _NewLights)
+    {
+        ResetTrend(_type, _OldResult);
+        SetTrend(_type, _NewLights);
     }
     #endregion
 
@@ -153,7 +202,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("u"))
+        if (Input.GetKeyDown(KeyCode.U))
         {
             if (debugPanel)
             {
@@ -168,7 +217,7 @@ public class UIManager : MonoBehaviour
         lights.Add(new Light() {color = Color.blue });
         lights.Add(new Light() {color = Color.green });
         lights.Add(new Light() {color = Color.red });
-        CreatetTrend(TrendStreakType.Type1, lights);
+        SetTrend(TrendStreakType.Type1, lights);
         Score(50);
     }
 
@@ -180,8 +229,21 @@ public class UIManager : MonoBehaviour
         if (index == 2)
         {
             ResetTrend(TrendStreakType.Type1, true);
+            SimulateSetNextNewTrend();
         }
     }
 
+    public void SimulateSetNextNewTrend()
+    {
+        List<Light> lights = new();
+        lights.Add(new Light() { color = Color.yellow });
+        lights.Add(new Light() { color = Color.cyan });
+        lights.Add(new Light() { color = Color.magenta });
+        FinishOldStartNew(TrendStreakType.Type1, true, lights);
+        Score(130);
+    }
+
     #endregion
+
+
 }
