@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] ScorePopup scorePopupPrefab = null;
     [SerializeField] float popupLifeTime = 1.0f;
-
     [SerializeField] private TextMeshProUGUI scoreTMP = null;
     [SerializeField] private TextMeshProUGUI addedTMP = null;
     [SerializeField] private StreakUI trendLeft = null;
@@ -17,6 +16,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string fadeTriggerLabel = "ClearView";
     [SerializeField] private string addAmountLabel = "AddAmount";
     [SerializeField] private Transform debugPanel = null;
+    [SerializeField] private Canvas startScreen = null;
+    [SerializeField] private Snapshot playerSnapshotUI = null;
+    [SerializeField] private Snapshot rivalSnapshotUI = null;
+
+    [SerializeField] private List<Sprite> playerPhotos = new();
+    [SerializeField] private List<Sprite> rivalPhotos = new();
+
+    [SerializeField] private TextMeshProUGUI levelTmp = null;
+
+    public AudioPlayer audioPlayer = null;
 
 
     private void OnEnable()
@@ -37,6 +46,14 @@ public class UIManager : MonoBehaviour
         if (animator == null && !this.gameObject.TryGetComponent(out animator))
         {
             Debug.LogError("no animator found in UI manager");
+        }
+        if (startScreen == null)
+        {
+            Debug.LogWarning("no start screen found");
+        }
+        if (audioPlayer == null && !this.gameObject.TryGetComponent(out audioPlayer))
+        {
+            Debug.LogError("no audio source found in UI manager");
         }
     }
 
@@ -196,6 +213,67 @@ public class UIManager : MonoBehaviour
         ResetTrend(_type, _OldResult);
         SetTrend(_type, _NewLights);
     }
+
+    /// <summary>
+    /// turn Off/On the start screen
+    /// </summary>
+    /// <param name="state"></param>
+    public void TurnStartMenu(bool state)
+    {
+        if (startScreen != null)
+        {
+            startScreen.enabled = state;
+        }
+    }
+
+    public void StartWheel()
+    {
+       
+    }
+
+
+    /// <summary>
+    /// update UI based on achieved level and threshold
+    /// </summary>
+    /// <param name="_level">number of new level</param>
+    /// <param name="_points">the exceeded threshold amount</param>
+    public void LevelUpUI(int _level, int _points = 0)
+    {
+        if (playerSnapshotUI)
+        {
+            Sprite shot = null;
+            if (playerPhotos.Count > 0)
+            {
+                shot = playerPhotos[Random.Range(0, playerPhotos.Count)];
+            }
+            playerSnapshotUI.TakeSnapshot(shot, _points);
+            EventManager.Call_OnTakeSnapshot(true);
+        }
+        if (levelTmp)
+        {
+            levelTmp.text = _level.ToString();
+            if (levelTmp.gameObject.TryGetComponent(out Pingable levelPing))
+            {
+                levelPing.Ping();
+            }
+        }
+    }
+
+    /// <summary>
+    /// update ui on losing enough points
+    /// </summary>
+    /// <param name="rivalPoints">rival hits a better record</param>
+    public void LeftBehindUI(int rivalPoints)
+    {
+        Sprite shot = null;
+        if (rivalPhotos.Count > 0)
+        {
+            shot = rivalPhotos[Random.Range(0, rivalPhotos.Count)];
+        }
+        rivalSnapshotUI.TakeSnapshot(shot, rivalPoints);
+        EventManager.Call_OnTakeSnapshot(false);
+    }
+
     #endregion
 
     #region Debug Methods
@@ -241,6 +319,16 @@ public class UIManager : MonoBehaviour
         lights.Add(new Light() { color = Color.magenta });
         FinishOldStartNew(TrendStreakType.Type1, true, lights);
         Score(130);
+    }
+
+    public void SimulatePlayerLevelUp()
+    {
+        LevelUpUI(3, 2000);
+    }
+
+    public void SimulateLeftBehind()
+    {
+        LeftBehindUI(3000);
     }
 
     #endregion
