@@ -58,6 +58,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (startScreen)
+        {
+            startScreen.enabled = true;
+        }
+    }
+
     private void PopScore(int _score, Vector3 _position)
     {
         if (scorePopupPrefab != null)
@@ -240,6 +248,11 @@ public class UIManager : MonoBehaviour
        
     }
 
+    public void EndGame()
+    {
+        FadeUIAway();
+    }
+
 
     /// <summary>
     /// update UI based on achieved level and threshold
@@ -338,6 +351,15 @@ public class UIManager : MonoBehaviour
     public void SimulateLeftBehind()
     {
         LeftBehindUI(3000);
+    }
+
+    public void SimulateEnd()
+    {
+        EndGame();
+        if (debugPanel)
+        {
+            debugPanel.gameObject.SetActive(false);
+        }
     }
 
     #endregion
