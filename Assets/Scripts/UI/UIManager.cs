@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class UIManager : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<Sprite> rivalPhotos = new();
 
     [SerializeField] private TextMeshProUGUI levelTmp = null;
-
+    [SerializeField] private PlayableDirector director = null;
     public AudioPlayer audioPlayer = null;
 
 
@@ -199,6 +200,14 @@ public class UIManager : MonoBehaviour
         if (animator)
         {
             animator.SetTrigger(fadeTriggerLabel);
+        }
+    }
+
+    public void RunEndingCutScene()
+    {
+        if (director)
+        {
+            director.Play();
         }
     }
 
