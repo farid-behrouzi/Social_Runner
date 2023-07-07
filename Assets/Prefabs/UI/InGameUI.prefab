@@ -1675,13 +1675,17 @@ MonoBehaviour:
   playerSnapshotUI: {fileID: 4175771645174117727}
   rivalSnapshotUI: {fileID: 5305198615365946326}
   playerPhotos:
-  - {fileID: 21300000, guid: 8e40b75ac1b7ef14aae9a30e824209b4, type: 3}
-  - {fileID: 21300000, guid: bbf5a991009be654a85b5b3405fb573a, type: 3}
-  - {fileID: 21300000, guid: 351b5eaab997d5b4a94146afd0b3331d, type: 3}
+  - {fileID: 21300000, guid: ae2adc208aa48bf42821ad56d9b7acb1, type: 3}
+  - {fileID: 21300000, guid: d292baf2af22b6640b21862f7c343ee1, type: 3}
+  - {fileID: 21300000, guid: 8fdca76f29f83594bbaece46075778b6, type: 3}
+  - {fileID: 21300000, guid: 945e891dfdf3f7f47a3f335747aea422, type: 3}
+  - {fileID: 21300000, guid: 7cb6d75508b62bb428b75b1853e77f1d, type: 3}
   rivalPhotos:
-  - {fileID: 21300000, guid: bbf5a991009be654a85b5b3405fb573a, type: 3}
-  - {fileID: 21300000, guid: 351b5eaab997d5b4a94146afd0b3331d, type: 3}
-  - {fileID: 21300000, guid: 8e40b75ac1b7ef14aae9a30e824209b4, type: 3}
+  - {fileID: 21300000, guid: eeef066dc54f7f247a3b023b78e41626, type: 3}
+  - {fileID: 21300000, guid: d38927679afd25a489b20f85321f6196, type: 3}
+  - {fileID: 21300000, guid: d2b59fe2719403643817330ad947cdc7, type: 3}
+  - {fileID: 21300000, guid: ff7026ada92dfa8478132d7ccf38be66, type: 3}
+  - {fileID: 21300000, guid: c1f7399a49797a94da20bf3daec499d3, type: 3}
   levelTmp: {fileID: 4974305565894317165}
   director: {fileID: 0}
   audioPlayer: {fileID: 0}

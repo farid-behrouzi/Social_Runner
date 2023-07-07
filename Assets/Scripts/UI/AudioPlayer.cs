@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class AudioPlayer : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class AudioPlayer : MonoBehaviour
     [Header("audio clips")]
 
     [SerializeField] private AudioClip playingBGMusic = null;
-    [SerializeField] private AudioClip stopWheelBGMusic = null;
+    [SerializeField] private AudioClip stopedWheelBGMusic = null;
+    [SerializeField] private AudioClip slowingWheelSound = null;
     [SerializeField] private AudioClip hitSingleTokenSFX = null;
     [SerializeField] private AudioClip correctStreak = null;
     [SerializeField] private AudioClip wrongStreak = null;
@@ -26,11 +28,41 @@ public class AudioPlayer : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnTakeSnapshot += PlaySnapshot;
+        EventManager.OnTrendChange += PlayTrendChange;
+        EventManager.OnHit += PlayHit;
+        EventManager.OnLevelUp += PlayLevelUp;
+        EventManager.OnEnd += PlayEnd;
+        EventManager.OnStart += PlayStart;
     }
 
     private void OnDisable()
     {
         EventManager.OnTakeSnapshot -= PlaySnapshot;
+        EventManager.OnTrendChange -= PlayTrendChange;
+        EventManager.OnHit -= PlayHit;
+        EventManager.OnLevelUp -= PlayLevelUp;
+        EventManager.OnEnd -= PlayEnd;
+        EventManager.OnStart -= PlayStart;
+    }
+
+    private void PlayStart()
+    {
+        PlayMusic(playingBGMusic);
+    }
+
+    private void PlayEnd()
+    {
+        PlayMusic(stopedWheelBGMusic);
+    }
+
+    private void PlayLevelUp(int level, int points)
+    {
+        PlaySFX(levelUp);
+    }
+
+    private void PlayHit()
+    {
+        PlaySFX(hitSingleTokenSFX);
     }
 
     private void Awake()
@@ -58,6 +90,11 @@ public class AudioPlayer : MonoBehaviour
 
 
 
+    private void PlayTrendChange(bool state)
+    {
+        PlaySFX(state ? correctStreak : wrongStreak);
+    }
+
     private void PlaySnapshot(bool isPlayer)
     {
         PlaySFX(isPlayer ? playerSnapshot : rivalSnapshot);
@@ -79,7 +116,7 @@ public class AudioPlayer : MonoBehaviour
             }
         }
     }
-    private void PlaMusic(AudioClip _clip)
+    private void PlayMusic(AudioClip _clip)
     {
         if (musicSource)
         {

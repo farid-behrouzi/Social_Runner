@@ -144,15 +144,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 5865690472964964743}
   sfxSource: {fileID: 4044229302737797245}
-  playingBGMusic: {fileID: 0}
-  stopWheelBGMusic: {fileID: 0}
+  playingBGMusic: {fileID: 8300000, guid: a592aad4992f20d4e80b00612fdde9a2, type: 3}
+  stopedWheelBGMusic: {fileID: 8300000, guid: 907ed097ce5c819469ff2c75ac42db64, type: 3}
+  slowingWheelSound: {fileID: 0}
   hitSingleTokenSFX: {fileID: 0}
-  correctStreak: {fileID: 0}
-  wrongStreak: {fileID: 0}
+  correctStreak: {fileID: 8300000, guid: 754bcede05a05124abff91c270575d23, type: 3}
+  wrongStreak: {fileID: 8300000, guid: 754bcede05a05124abff91c270575d23, type: 3}
   levelUp: {fileID: 0}
-  playerSnapshot: {fileID: 0}
-  rivalSnapshot: {fileID: 0}
-  musicVolume: 1
+  playerSnapshot: {fileID: 8300000, guid: 955a5e9c299bc6e4e9d8e8cbb41a88ba, type: 3}
+  rivalSnapshot: {fileID: 8300000, guid: 7d6c5f8b65c7b5645b4e32dde899282b, type: 3}
+  musicVolume: 0.5
   sfxVolume: 1
 --- !u!82 &4044229302737797245
 AudioSource:

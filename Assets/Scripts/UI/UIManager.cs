@@ -141,6 +141,8 @@ public class UIManager : MonoBehaviour
                 trendRight.TurnLight(_id);
                 break;
         }
+
+        EventManager.Call_OnHit();
     }
 
     /// <summary>
@@ -217,6 +219,7 @@ public class UIManager : MonoBehaviour
         {
             director.Play();
         }
+        EventManager.Call_End();
     }
 
     /// <summary>
@@ -245,7 +248,7 @@ public class UIManager : MonoBehaviour
 
     public void StartWheel()
     {
-       
+        EventManager.Call_Start();
     }
 
     public void EndGame()
@@ -270,6 +273,7 @@ public class UIManager : MonoBehaviour
             }
             playerSnapshotUI.TakeSnapshot(shot, _points);
             EventManager.Call_OnTakeSnapshot(true);
+            
         }
         if (levelTmp)
         {
@@ -331,6 +335,7 @@ public class UIManager : MonoBehaviour
             ResetTrend(TrendStreakType.Type1, true);
             SimulateSetNextNewTrend();
         }
+        EventManager.Call_OnHit();
     }
 
     public void SimulateSetNextNewTrend()
