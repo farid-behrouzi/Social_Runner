@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas startScreen = null;
     [SerializeField] private Snapshot playerSnapshotUI = null;
     [SerializeField] private Snapshot rivalSnapshotUI = null;
+    [SerializeField] private UnityEngine.UI.Image badgeImage = null;
 
     [SerializeField] private List<Sprite> playerPhotos = new();
     [SerializeField] private List<Sprite> rivalPhotos = new();
@@ -128,9 +129,6 @@ public class UIManager : MonoBehaviour
     /// if _id is 0 the first light will be highlighted and if 1 the second one ...</param>
     public void TurnTrendLight(TrendStreakType _type, int _id)
     {
-        Debug.Log("F@rid=> id: " + _id);
-        Debug.Log("TurnTrendLight");
-        
         switch (_type)
         {
             case TrendStreakType.Type1:
@@ -185,6 +183,24 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// turns off all lights in trend UI with given type
+    /// </summary>
+    /// <param name="_type"></param>
+    public void ResetTrendTokens(TrendStreakType _type)
+    {
+        switch (_type)
+        {
+            case TrendStreakType.Type1:
+            default:
+                trendLeft.ResetTokens();
+                break;
+            case TrendStreakType.Type2:
+                trendRight.ResetTokens();
+                break;
+        }
+    }
+
+    /// <summary>
     /// updates UI score number and runs a popup to show the added amount
     /// </summary>
     /// <param name="totalScore">number to be shown as player's total score</param>
@@ -222,16 +238,21 @@ public class UIManager : MonoBehaviour
         EventManager.Call_End();
     }
 
+
     /// <summary>
     /// updates the UI with the last streak feedback result and new set of lights for the next one
     /// </summary>
     /// <param name="_type">type1 : left trend panel, type2: right trend panel</param>
     /// <param name="_OldResult">if True, UI gives a successful feedback regarding to the last streak</param>
     /// <param name="_NewLights">new set of Light objects to create a new trend UI elements accordingly</param>
-    public void FinishOldStartNew(TrendStreakType _type, bool _OldResult, List<Light> _NewLights)
+    public void FinishOldStartNew(TrendStreakType _type, bool _OldResult, List<Light> _NewLights, int _points = 0)
     {
         ResetTrend(_type, _OldResult);
         SetTrend(_type, _NewLights);
+        if (_OldResult)
+        {
+            TakePlayerSnapshot(_points);
+        }
     }
 
     /// <summary>
@@ -256,13 +277,11 @@ public class UIManager : MonoBehaviour
         FadeUIAway();
     }
 
-
     /// <summary>
-    /// update UI based on achieved level and threshold
+    /// updae ui to take snapshot on completing a streak
     /// </summary>
-    /// <param name="_level">number of new level</param>
-    /// <param name="_points">the exceeded threshold amount</param>
-    public void LevelUpUI(int _level, int _points = 0)
+    /// <param name="_points"></param>
+    public void TakePlayerSnapshot(int _points = 0)
     {
         if (playerSnapshotUI)
         {
@@ -273,15 +292,26 @@ public class UIManager : MonoBehaviour
             }
             playerSnapshotUI.TakeSnapshot(shot, _points);
             EventManager.Call_OnTakeSnapshot(true);
-            
+
+        }
+    }
+
+
+    /// <summary>
+    /// update UI based on achieved level and threshold
+    /// </summary>
+    /// <param name="_level">number of new level</param>
+    /// <param name="_points">the exceeded threshold amount</param>
+    public void LevelUpUI(int _level, int _points = 0)
+    {
+        if (badgeImage)
+        {
+            TryPing(badgeImage.gameObject);
         }
         if (levelTmp)
         {
             levelTmp.text = _level.ToString();
-            if (levelTmp.gameObject.TryGetComponent(out Pingable levelPing))
-            {
-                levelPing.Ping();
-            }
+            TryPing(levelTmp.gameObject);
         }
     }
 
@@ -298,6 +328,16 @@ public class UIManager : MonoBehaviour
         }
         rivalSnapshotUI.TakeSnapshot(shot, rivalPoints);
         EventManager.Call_OnTakeSnapshot(false);
+    }
+
+    public bool TryPing(GameObject _obj)
+    {
+        if (_obj.TryGetComponent(out Pingable levelPing))
+        {
+            levelPing.Ping();
+            return true;
+        }
+        return false;
     }
 
     #endregion
