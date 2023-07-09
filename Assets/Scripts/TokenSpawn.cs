@@ -30,7 +30,7 @@ public class TokenSpawn : MonoBehaviour
 
     private void Update()
     {
-        //SpawnTimer();
+        SpawnTimer();
         if (Input.GetKeyDown(KeyCode.Z))
         {
             SpawnTokenTest(0);

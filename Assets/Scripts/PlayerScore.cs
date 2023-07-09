@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameData : MonoBehaviour
+public class PlayerScore : MonoBehaviour
 {
 
     private int playerPoint;
@@ -16,6 +16,10 @@ public class GameData : MonoBehaviour
     private PlayerBadgeState playerBadgeState;
 
     private bool rivalSnapshotPermission = false;
+    private const int tokenDefaultPoint = 20;
+    private int nextBadgeThreshold = 50;
+    private int playerLevel = 1;
+    private int playerBadge = 1;
 
     private void Awake()
     {
@@ -31,25 +35,50 @@ public class GameData : MonoBehaviour
 
     private void Start()
     {
-        PlayerToken.OnPlayerHitTokenPointUpdate += UpdatePoint;
-        
-        InvokeRepeating(nameof(AttentionPointReduction), 0f, pointReductionRate);
+        GameEvents.OnPointReduction += AttentionPointReduction;
+        GameEvents.Call_OnPlayerLevelUpUIUpdate(playerBadge, playerPoint);
+        //InvokeRepeating(nameof(AttentionPointReduction), 0f, pointReductionRate);
     }
 
-    private void UpdatePoint(int tokenCount)
+    private void Update()
     {
-        Debug.Log("Token Count: " + tokenCount);
-        if (basePoints.ContainsKey(tokenCount))
-        {
-            playerPoint += basePoints[tokenCount];
-            CheckRewardState();
-            GameEvents.PlayerScoreUIUpdate(playerPoint, basePoints[tokenCount]);
-        }
+        CheckBadge();
+    }
 
-        if (playerPoint > 50)
+    private void CheckBadge()
+    {
+        if (playerPoint >= nextBadgeThreshold)
         {
-            rivalSnapshotPermission = true;
+            CalculateNextThreshold();
         }
+    }
+
+    private void CalculateNextThreshold()
+    {
+        int i = 0;
+        float c = playerLevel * 1.4f;
+        while (c % 10 > 10)
+        {
+            i++;
+            c /= 10;
+        }  
+        nextBadgeThreshold = Mathf.FloorToInt(playerLevel * 1.4f / (10 * i)) * (10 * i);
+        playerBadge++;
+        GameEvents.Call_OnPlayerLevelUpUIUpdate(playerBadge, playerPoint);
+    }
+
+    public void UpdatePoint()
+    {
+        playerPoint += (playerLevel * (playerLevel + 1));
+        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerLevel * (playerLevel + 1)));
+    }
+
+    public void UpdatePointOnTrendCompletion(int lights)
+    {
+        playerPoint += (playerLevel * (playerLevel * lights));
+        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerLevel * (playerLevel * lights)));
+        playerLevel++;
+        GameEvents.Call_OnPlayerCompletedTrend(playerPoint);
     }
 
 
@@ -86,15 +115,17 @@ public class GameData : MonoBehaviour
         }
     }
 
-    private void AttentionPointReduction()
+    private void AttentionPointReduction(float trendStreakTimer)
     {
-        playerPoint -= pointReductionValue;
+        int reductionPoint = Mathf.FloorToInt(trendStreakTimer * (playerPoint * 0.01f));
+        GameEvents.PlayerScoreUIUpdate(playerPoint, -reductionPoint);
+        playerPoint -= reductionPoint;
+        //Debug.Log("AttentionPointReduction: " + reductionPoint);
         if (playerPoint < 0)
         {
             playerPoint = 0;
         }
-
-        CheckReductionSituation();
+        //CheckReductionSituation();
     }
 
     private void CheckReductionSituation()
@@ -142,8 +173,8 @@ public class GameData : MonoBehaviour
             item.isTriggered = false;
         }
     }
-    
-    
+
+
     [System.Serializable]
     public class RewardTableInfo
     {

@@ -11,6 +11,9 @@ public class TrendStreak : MonoBehaviour
     private TrendStreakType type;
     private List<Token> tokenList = new List<Token>();
     private List<Light> uiLightsList = new List<Light>();
+    private float secondCounter;
+
+    private bool justGenerated = true;
 
 
     private void Start()
@@ -18,12 +21,14 @@ public class TrendStreak : MonoBehaviour
         switch (type)
         {
             case TrendStreakType.Type1:
-                tokenTrend.OnFirstTokenStreakCompleted += DistroyItself;
+                tokenTrend.OnFirstTokenStreakCompleted += Terminate;
                 break;
             case TrendStreakType.Type2:
-                tokenTrend.OnSecondTokenStreakCompleted += DistroyItself;
+                tokenTrend.OnSecondTokenStreakCompleted += Terminate;
                 break;
         }
+
+        InvokeRepeating(nameof(ReductAttentionPoint), 0f, 1f);
     }
 
     // Update is called once per frame
@@ -34,8 +39,15 @@ public class TrendStreak : MonoBehaviour
             timer += Time.deltaTime;
             return;
         }
-        
-        Destroy(gameObject);
+
+        GameEvents.Call_OnRivalSnapshopt();
+        Terminate();
+    }
+
+    private void ReductAttentionPoint()
+    {
+        secondCounter++;
+        GameEvents.ReductAttentionPoint(secondCounter);
     }
 
     public void SetLifeTime(float lifeTime)
@@ -67,30 +79,30 @@ public class TrendStreak : MonoBehaviour
             Light newLight = new Light(){id = token.GetID(), color = token.GetColor()};
             uiLightsList.Add(newLight);
         }
-        
-        Debug.Log("UpdateUI");
         GameEvents.CreateTrendUIUpdate(type, uiLightsList);
     }
 
     private void DistroyItself()
     {
-        Destroy(gameObject);
+        //CancelInvoke(nameof(ReductAttentionPoint));
+        //DestroyImmediate(gameObject);
     }
 
-
-    private void OnDestroy()
+    private void Terminate()
     {
-        tokenTrend.OnFirstTokenStreakCompleted -= DistroyItself;
-        tokenTrend.OnSecondTokenStreakCompleted -= DistroyItself;
-        
+        CancelInvoke(nameof(ReductAttentionPoint));
         switch (type)
         {
             case TrendStreakType.Type1:
+                tokenTrend.OnFirstTokenStreakCompleted -= Terminate;
                 tokenTrend.GenerateFirstTokenStreak();
                 break;
             case TrendStreakType.Type2:
+                tokenTrend.OnSecondTokenStreakCompleted -= Terminate;
                 tokenTrend.GenerateSecondTokenStreak();
                 break;
         }
+        
+        Destroy(gameObject);
     }
 }

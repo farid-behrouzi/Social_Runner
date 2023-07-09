@@ -62,74 +62,6 @@ Transform:
   m_Father: {fileID: 5786518317199256868}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5786518316202686101
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5786518316202686107}
-  - component: {fileID: 5786518316202686106}
-  m_Layer: 0
-  m_Name: GameData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5786518316202686107
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5786518316202686101}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5786518316467206786}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5786518316202686106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5786518316202686101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0dcd585fa20d457294f38f55c40ac11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rewardTableList:
-  - state: 0
-    triggerValue: 50
-    isTriggered: 0
-  - state: 1
-    triggerValue: 100
-    isTriggered: 0
-  - state: 0
-    triggerValue: 250
-    isTriggered: 0
-  - state: 2
-    triggerValue: 500
-    isTriggered: 0
-  - state: 0
-    triggerValue: 600
-    isTriggered: 0
-  - state: 0
-    triggerValue: 900
-    isTriggered: 0
-  - state: 3
-    triggerValue: 1200
-    isTriggered: 0
-  pointReductionRate: 1.5
-  pointReductionValue: 1
 --- !u!1 &5786518316467207037
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +98,6 @@ Transform:
   - {fileID: 5786518316721303063}
   - {fileID: 5786518317899736976}
   - {fileID: 5786518317691150245}
-  - {fileID: 5786518316202686107}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -433,6 +364,7 @@ GameObject:
   - component: {fileID: 5786518317230032531}
   - component: {fileID: 5786518317230032534}
   - component: {fileID: 5786518317230032535}
+  - component: {fileID: 875938448592157158}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -546,6 +478,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b32981a51dfa40e8a328cf8257923ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &875938448592157158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786518317230032525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0dcd585fa20d457294f38f55c40ac11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rewardTableList:
+  - state: 0
+    triggerValue: 50
+    isTriggered: 0
+  - state: 1
+    triggerValue: 100
+    isTriggered: 0
+  - state: 0
+    triggerValue: 250
+    isTriggered: 0
+  - state: 2
+    triggerValue: 500
+    isTriggered: 0
+  - state: 0
+    triggerValue: 600
+    isTriggered: 0
+  - state: 0
+    triggerValue: 900
+    isTriggered: 0
+  - state: 3
+    triggerValue: 1200
+    isTriggered: 0
+  pointReductionRate: 1.5
+  pointReductionValue: 1
 --- !u!1 &5786518317325705238
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,10 +712,10 @@ MonoBehaviour:
   - {fileID: 2889511507623535635, guid: c5240cf46093e4eeea44666ac4296a3c, type: 3}
   streakLengthMinimum: 3
   streakLengthMaximum: 5
-  firstTrendStreakLifeTimeMinimum: 20000
-  firstTrendStreakLifeTimeMaximum: 20000
-  secondTrendStreakLifeTimeMinimum: 20000
-  secondTrendStreakLifeTimeMaximum: 20000
+  firstTrendStreakLifeTimeMinimum: 3
+  firstTrendStreakLifeTimeMaximum: 5
+  secondTrendStreakLifeTimeMinimum: 3
+  secondTrendStreakLifeTimeMaximum: 5
 --- !u!1 &5786518317828242563
 GameObject:
   m_ObjectHideFlags: 0

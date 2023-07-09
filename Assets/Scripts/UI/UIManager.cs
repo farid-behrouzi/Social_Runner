@@ -34,14 +34,21 @@ public class UIManager : MonoBehaviour
     {
         GameEvents.OnPlayerHitTokenUIUpdate += TurnTrendLight;
         GameEvents.OnCreateTrendUIUpdate += SetTrend;
-        GameEvents.OnResetTrendUIUpdate += ResetTrend;
+        GameEvents.OnResetTrendUIUpdate += ResetTrendTokens;
         GameEvents.OnPlayerScore += Score;
+        GameEvents.OnPlayerCompletedTrend += TakePlayerSnapshot;
+        GameEvents.OnPlayerLevelUpUIUpdate += LevelUpUI;
+        GameEvents.OnTrendIsGone += LeftBehindUI;
     }
     private void OnDisable()
     {
         GameEvents.OnPlayerHitTokenUIUpdate -= TurnTrendLight;
         GameEvents.OnCreateTrendUIUpdate -= SetTrend;
-        GameEvents.OnResetTrendUIUpdate -= ResetTrend;
+        GameEvents.OnResetTrendUIUpdate -= ResetTrendTokens;
+        GameEvents.OnPlayerScore -= Score;
+        GameEvents.OnPlayerCompletedTrend -= TakePlayerSnapshot;
+        GameEvents.OnPlayerLevelUpUIUpdate -= LevelUpUI;
+        GameEvents.OnTrendIsGone -= LeftBehindUI;
     }
 
     private void Awake()
@@ -283,7 +290,7 @@ public class UIManager : MonoBehaviour
     /// updae ui to take snapshot on completing a streak
     /// </summary>
     /// <param name="_points"></param>
-    public void TakePlayerSnapshot(int _points = 0)
+    private void TakePlayerSnapshot(int _points = 0)
     {
         if (playerSnapshotUI)
         {
@@ -321,14 +328,14 @@ public class UIManager : MonoBehaviour
     /// update ui on losing enough points
     /// </summary>
     /// <param name="rivalPoints">rival hits a better record</param>
-    public void LeftBehindUI(int rivalPoints)
+    private void LeftBehindUI()
     {
         Sprite shot = null;
         if (rivalPhotos.Count > 0)
         {
             shot = rivalPhotos[Random.Range(0, rivalPhotos.Count)];
         }
-        rivalSnapshotUI.TakeSnapshot(shot, rivalPoints);
+        rivalSnapshotUI.TakeSnapshot(shot, 0);
         EventManager.Call_OnTakeSnapshot(false);
     }
 
@@ -397,7 +404,7 @@ public class UIManager : MonoBehaviour
 
     public void SimulateLeftBehind()
     {
-        LeftBehindUI(3000);
+        LeftBehindUI();
     }
 
     public void SimulateEnd()

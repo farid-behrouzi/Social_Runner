@@ -39,6 +39,16 @@ public class PlayerMovement : MonoBehaviour
             jumpTimer = 0f;
             StartCoroutine(Jump());
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameEvents.Call_OnStopWheelSmoothly();
+        }
+        
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            GameEvents.Call_OnCancelWheelSpeedReduction();
+        }
     }
 
 

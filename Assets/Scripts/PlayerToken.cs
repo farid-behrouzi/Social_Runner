@@ -8,12 +8,17 @@ public class PlayerToken : MonoBehaviour
     private TrendStreakType playerTrendType;
     private List<Token> playerTokenList = new List<Token>();
     private PlayerTrendFollowState trendState;
-
-    public static Action<int> OnPlayerHitTokenPointUpdate;
+    
     private int playersFirstTokenCounter;
     private int playersSecondTokenCounter;
-    
 
+    private PlayerScore playerScore;
+
+
+    private void Awake()
+    {
+        playerScore = GetComponent<PlayerScore>();
+    }
 
     public void GrabTheToken(int ID, Token token)
     {
@@ -35,13 +40,13 @@ public class PlayerToken : MonoBehaviour
         
         if (isTokenValidInFirstStreak && isTokenValidInSecondStreak)
         {
+            playerScore.UpdatePoint();
+            playerScore.UpdatePoint();
+            trendState = PlayerTrendFollowState.All;
+            GameEvents.PlayerHitToken(TrendStreakType.Type1, playersFirstTokenCounter);
+            GameEvents.PlayerHitToken(TrendStreakType.Type2, playersSecondTokenCounter);
             playersFirstTokenCounter++;
             playersSecondTokenCounter++;
-            OnPlayerHitTokenPointUpdate?.Invoke(playersFirstTokenCounter);
-            OnPlayerHitTokenPointUpdate?.Invoke(playersSecondTokenCounter);
-            trendState = PlayerTrendFollowState.All;
-            GameEvents.PlayerHitToken(TrendStreakType.Type1, playerTokenList.Count);
-            GameEvents.PlayerHitToken(TrendStreakType.Type2, playerTokenList.Count);
             if (TokenTrend.instance.IsTrendCompleted(TrendStreakType.Type1, playerTokenList))
             {
                 TrendCompleted(TrendStreakType.Type1);
@@ -63,10 +68,10 @@ public class PlayerToken : MonoBehaviour
             }
 
             playersSecondTokenCounter = 0;
-            playersFirstTokenCounter++;
-            OnPlayerHitTokenPointUpdate?.Invoke(playersFirstTokenCounter);
+            playerScore.UpdatePoint();
             GameEvents.ResetTrendUIUpdate(TrendStreakType.Type2);
             GameEvents.PlayerHitToken(TrendStreakType.Type1, playerTokenList.Count);
+            playersFirstTokenCounter++;
             if (TokenTrend.instance.IsTrendCompleted(TrendStreakType.Type1, playerTokenList))
             {
                 TrendCompleted(TrendStreakType.Type1);
@@ -83,10 +88,10 @@ public class PlayerToken : MonoBehaviour
             }
 
             playersFirstTokenCounter = 0;
-            playersSecondTokenCounter++;
-            OnPlayerHitTokenPointUpdate?.Invoke(playersSecondTokenCounter);
+            playerScore.UpdatePoint();
             GameEvents.ResetTrendUIUpdate(TrendStreakType.Type1);
             GameEvents.PlayerHitToken(TrendStreakType.Type2, playerTokenList.Count);
+            playersSecondTokenCounter++;
             if (TokenTrend.instance.IsTrendCompleted(TrendStreakType.Type2, playerTokenList))
             {
                 TrendCompleted(TrendStreakType.Type2);
@@ -95,7 +100,6 @@ public class PlayerToken : MonoBehaviour
         }
         
         playerTokenList.Add(token);
-        //OnPlayerHitTokenPointUpdate?.Invoke(playerTokenList.Count);
     }
 
     private void TrendCompleted(TrendStreakType type)
@@ -103,13 +107,14 @@ public class PlayerToken : MonoBehaviour
         switch (type)
         {
             case TrendStreakType.Type1:
+                playerScore.UpdatePointOnTrendCompletion(playersFirstTokenCounter);
                 playersFirstTokenCounter = 0;
                 break;
             case TrendStreakType.Type2:
+                playerScore.UpdatePointOnTrendCompletion(playersSecondTokenCounter);
                 playersSecondTokenCounter = 0;
                 break;
         }
-        Debug.Log("TrendCompleted");
         playerTokenList = new List<Token>();
     }
 
