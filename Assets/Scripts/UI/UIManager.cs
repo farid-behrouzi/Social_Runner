@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
         GameEvents.OnPlayerHitTokenUIUpdate += TurnTrendLight;
         GameEvents.OnCreateTrendUIUpdate += SetTrend;
         GameEvents.OnResetTrendUIUpdate += ResetTrend;
+        GameEvents.OnPlayerScore += Score;
     }
     private void OnDisable()
     {
@@ -107,7 +108,7 @@ public class UIManager : MonoBehaviour
     /// <param name="_lights"></param>
     public void SetTrend(TrendStreakType _type, List<Light> _lights)
     {
-        ClearTrend(_type);
+        //ClearTrend(_type);
         switch (_type)
         {
             case TrendStreakType.Type1:
@@ -172,6 +173,7 @@ public class UIManager : MonoBehaviour
     /// <param name="_won">if true, trend UI gives a positive feedback and negative in case of fail</param>
     public void ResetTrend(TrendStreakType _type, bool _won = false)
     {
+        Debug.Log("ResetTrend");
         switch (_type)
         {
             case TrendStreakType.Type1:
@@ -189,7 +191,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     /// <param name="totalScore">number to be shown as player's total score</param>
     /// <param name="addedAmount">new added amount that has made the current total number</param>
-    public void Score(int totalScore,int addedAmount = 0)
+    private void Score(int totalScore,int addedAmount = 0)
     {
         if (scoreTMP)
         {

@@ -38,10 +38,12 @@ public class GameData : MonoBehaviour
 
     private void UpdatePoint(int tokenCount)
     {
+        Debug.Log("Token Count: " + tokenCount);
         if (basePoints.ContainsKey(tokenCount))
         {
             playerPoint += basePoints[tokenCount];
             CheckRewardState();
+            GameEvents.PlayerScoreUIUpdate(playerPoint, basePoints[tokenCount]);
         }
 
         if (playerPoint > 50)

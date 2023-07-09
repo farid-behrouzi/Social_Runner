@@ -8,11 +8,17 @@ public class GameEvents
     public static Action<TrendStreakType, int> OnPlayerHitTokenUIUpdate;
     public static Action<TrendStreakType, List<Light>> OnCreateTrendUIUpdate;
     public static Action<TrendStreakType, bool> OnResetTrendUIUpdate;
+    public static Action<int, int> OnPlayerScore;
     
 
     public static void PlayerHitToken(TrendStreakType trendType, int tokenID)
     {
         OnPlayerHitTokenUIUpdate?.Invoke(trendType, tokenID);
+    }
+
+    public static void PlayerScoreUIUpdate(int totalScore, int newPoint)
+    {
+        OnPlayerScore?.Invoke(totalScore, newPoint);
     }
 
     public static void CreateTrendUIUpdate(TrendStreakType trendType, List<Light> lights)
