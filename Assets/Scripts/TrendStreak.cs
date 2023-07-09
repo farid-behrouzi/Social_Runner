@@ -34,12 +34,16 @@ public class TrendStreak : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (lifeTime == 0)
+        {
+            return;
+        }
         while (timer < lifeTime)
         {
             timer += Time.deltaTime;
             return;
         }
-
+        
         GameEvents.Call_OnRivalSnapshopt();
         Terminate();
     }

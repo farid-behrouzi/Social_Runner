@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Token : MonoBehaviour
@@ -14,6 +11,11 @@ public class Token : MonoBehaviour
     //     Material material = gameObject.GetComponent<MeshRenderer>().sharedMaterial;
     //     color = material.color;
     // }
+
+    public override string ToString()
+    {
+        return "This is a token with ID: " + GetID();
+    }
 
     public Color GetColor(TokenTrend token)
     {

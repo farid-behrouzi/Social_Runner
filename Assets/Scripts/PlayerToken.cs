@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,13 @@ public class PlayerToken : MonoBehaviour
     private void Awake()
     {
         playerScore = GetComponent<PlayerScore>();
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Start");
+        UpdateCurrentTokenToGet(playersFirstTokenCounter > playersSecondTokenCounter ? playersFirstTokenCounter : playersSecondTokenCounter, trendState);
     }
 
     public void GrabTheToken(int ID, Token token)
@@ -61,7 +69,7 @@ public class PlayerToken : MonoBehaviour
 
         if (isTokenValidInFirstStreak && !isTokenValidInSecondStreak)
         {
-            if (trendState == PlayerTrendFollowState.Trend2)
+            if (trendState == PlayerTrendFollowState.Trend2 || trendState == PlayerTrendFollowState.None)
             {
                 trendState = PlayerTrendFollowState.Trend1;   
                 playerTokenList = new List<Token>();
@@ -81,7 +89,7 @@ public class PlayerToken : MonoBehaviour
         
         if (!isTokenValidInFirstStreak && isTokenValidInSecondStreak)
         {
-            if (trendState == PlayerTrendFollowState.Trend1)
+            if (trendState == PlayerTrendFollowState.Trend1 || trendState == PlayerTrendFollowState.None)
             {
                 trendState = PlayerTrendFollowState.Trend2;   
                 playerTokenList = new List<Token>();
@@ -98,8 +106,25 @@ public class PlayerToken : MonoBehaviour
                 return;   
             }
         }
-        
+
+        UpdateCurrentTokenToGet(playersFirstTokenCounter >= playersSecondTokenCounter ? playersFirstTokenCounter : playersSecondTokenCounter, trendState);
         playerTokenList.Add(token);
+    }
+
+    private void UpdateCurrentTokenToGet(int currentTokenCounter, PlayerTrendFollowState playerTrendFollowState)
+    {
+        switch (playerTrendFollowState)
+        {
+            case PlayerTrendFollowState.Trend1:
+                GameEvents.Call_OnUpdateCurrentTokenInTrend(currentTokenCounter, PlayerTrendFollowState.Trend1);
+                break;
+            case PlayerTrendFollowState.Trend2:
+                GameEvents.Call_OnUpdateCurrentTokenInTrend(currentTokenCounter, PlayerTrendFollowState.Trend2);
+                break;
+            default:
+                GameEvents.Call_OnUpdateCurrentTokenInTrend(currentTokenCounter, PlayerTrendFollowState.Trend1);
+                break;
+        }
     }
 
     private void TrendCompleted(TrendStreakType type)
@@ -127,6 +152,4 @@ public class PlayerToken : MonoBehaviour
             //Debug.Break();
         }
     }
-    
-    
 }

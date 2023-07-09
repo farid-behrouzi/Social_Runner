@@ -15,6 +15,9 @@ public class GameEvents
     public static Action OnTrendIsGone;
     public static Action OnStopWheelSmoothly;
     public static Action OnCancelWheelReduction;
+    public static Action<int, PlayerTrendFollowState> OnUpdateCurrentTokenInTrend;
+
+    public static Token token;
 
 
     public static void PlayerHitToken(TrendStreakType trendType, int tokenID)
@@ -75,6 +78,11 @@ public class GameEvents
     public static void Call_OnCancelWheelSpeedReduction()
     {
         OnCancelWheelReduction?.Invoke();
+    }
+
+    public static void Call_OnUpdateCurrentTokenInTrend(int currentTokenCounter, PlayerTrendFollowState playerTrendFollowState)
+    {
+        OnUpdateCurrentTokenInTrend?.Invoke(currentTokenCounter, playerTrendFollowState);
     }
 
 }

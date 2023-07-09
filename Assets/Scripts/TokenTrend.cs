@@ -51,6 +51,8 @@ public class TokenTrend : MonoBehaviour
         GenerateSecondTokenStreak();
 
         SetTrendStreaksLifeTime();
+
+        GameEvents.OnUpdateCurrentTokenInTrend += UpdateCurrentTokenToGet;
     }
 
     private int GetRandomLengthForTrendStreak()
@@ -224,6 +226,25 @@ public class TokenTrend : MonoBehaviour
         }
 
         return Color.black;
+    }
+    
+    private void UpdateCurrentTokenToGet(int currentTokenCounter, PlayerTrendFollowState playerTrendFollowState)
+    {
+        Debug.Log("UpdateCurrentTokenToGet");
+        switch (playerTrendFollowState)
+        {
+            case PlayerTrendFollowState.Trend1:
+                GameEvents.token = firstTrendStreakList[currentTokenCounter];
+                break;
+            case PlayerTrendFollowState.Trend2:
+                GameEvents.token = secondTrendStreakList[currentTokenCounter];
+                break;
+            default:
+                GameEvents.token = secondTrendStreakList[currentTokenCounter];
+                break;
+        }
+        
+        Debug.Log(GameEvents.token.ToString());
     }
     
 }
