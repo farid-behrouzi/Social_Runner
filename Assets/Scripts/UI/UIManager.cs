@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
     {
         if (addedTMP)
         {
-            addedTMP.text = "+" + _score.ToString();
+            addedTMP.text = (_score > 0 ? "+" : "") + _score.ToString();
             if (animator)
             {
                 animator.SetTrigger(addAmountLabel);

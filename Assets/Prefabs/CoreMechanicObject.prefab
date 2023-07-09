@@ -153,8 +153,8 @@ MonoBehaviour:
   - {fileID: -863535269399243640, guid: 6b9131468e65d457a8d51f2f4c527d1d, type: 3}
   - {fileID: -4087596388594522024, guid: 212c911fe9e1c4c0fad00569bd64ef3d, type: 3}
   - {fileID: -4123457327789643867, guid: c5240cf46093e4eeea44666ac4296a3c, type: 3}
-  tokenSpawnMinimumRate: 1
-  tokenSpawnMaximumRate: 3
+  tokenSpawnMinimumRate: 0.4
+  tokenSpawnMaximumRate: 2
 --- !u!1 &5786518316868444153
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,10 +712,10 @@ MonoBehaviour:
   - {fileID: 2889511507623535635, guid: c5240cf46093e4eeea44666ac4296a3c, type: 3}
   streakLengthMinimum: 3
   streakLengthMaximum: 5
-  firstTrendStreakLifeTimeMinimum: 3
-  firstTrendStreakLifeTimeMaximum: 5
-  secondTrendStreakLifeTimeMinimum: 3
-  secondTrendStreakLifeTimeMaximum: 5
+  firstTrendStreakLifeTimeMinimum: 20
+  firstTrendStreakLifeTimeMaximum: 30
+  secondTrendStreakLifeTimeMinimum: 20
+  secondTrendStreakLifeTimeMaximum: 30
 --- !u!1 &5786518317828242563
 GameObject:
   m_ObjectHideFlags: 0

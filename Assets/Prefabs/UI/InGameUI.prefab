@@ -1431,7 +1431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1250
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3740,7 +3740,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -4289,6 +4289,11 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 936574219151157601, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
+        type: 3}
+      propertyPath: m_fontColor.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5024275399324717981, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4509,7 +4514,7 @@ PrefabInstance:
     - target: {fileID: 701225829364444122, guid: fb9b04e5ba15c3145a987d568341f30e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 775
+      value: 802
       objectReference: {fileID: 0}
     - target: {fileID: 701225829364444122, guid: fb9b04e5ba15c3145a987d568341f30e,
         type: 3}
@@ -5115,6 +5120,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 936574219151157601, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
+        type: 3}
+      propertyPath: m_fontColor.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5024275399324717981, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
         type: 3}
