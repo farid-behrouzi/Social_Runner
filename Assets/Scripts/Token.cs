@@ -7,7 +7,6 @@ public class Token : MonoBehaviour
 {
     [SerializeField] private int ID;
     private TrendStreakType type;
-    [SerializeField] private Color color;
 
 
     // private void Start()
@@ -16,9 +15,9 @@ public class Token : MonoBehaviour
     //     color = material.color;
     // }
 
-    public Color GetColor()
+    public Color GetColor(TokenTrend token)
     {
-        return color;
+        return token.GetTokenColor(ID);
     }
 
     public int GetID()

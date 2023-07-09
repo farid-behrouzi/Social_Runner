@@ -60,7 +60,7 @@ public class TrendStreak : MonoBehaviour
         this.type = type;
     }
 
-    public void SetTokeTrend(TokenTrend tokenTrend)
+    public void SetTokenTrend(TokenTrend tokenTrend)
     {
         this.tokenTrend = tokenTrend;
     }
@@ -76,7 +76,7 @@ public class TrendStreak : MonoBehaviour
     {
         foreach (Token token in tokenList)
         {
-            Light newLight = new Light(){id = token.GetID(), color = token.GetColor()};
+            Light newLight = new Light(){id = token.GetID(), color = token.GetColor(tokenTrend)};
             uiLightsList.Add(newLight);
         }
         GameEvents.CreateTrendUIUpdate(type, uiLightsList);

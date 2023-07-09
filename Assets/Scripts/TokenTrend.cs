@@ -71,7 +71,7 @@ public class TokenTrend : MonoBehaviour
         TrendStreak trendStreak = trendStreakObject.AddComponent<TrendStreak>();
         trendStreak.SetLifeTime(firstTrendStreakLifeTime);
         trendStreak.SetTokenType(TrendStreakType.Type1);
-        trendStreak.SetTokeTrend(this);
+        trendStreak.SetTokenTrend(this);
         trendStreak.SetTokenList(firstTrendStreakList);
     }
     
@@ -83,7 +83,7 @@ public class TokenTrend : MonoBehaviour
         TrendStreak trendStreak = trendStreakObject.AddComponent<TrendStreak>();
         trendStreak.SetLifeTime(secondTrendStreakLifeTime);
         trendStreak.SetTokenType(TrendStreakType.Type2);
-        trendStreak.SetTokeTrend(this);
+        trendStreak.SetTokenTrend(this);
         trendStreak.SetTokenList(secondTrendStreakList);
     }
     
@@ -211,6 +211,19 @@ public class TokenTrend : MonoBehaviour
         }
 
         return false;
+    }
+
+    public Color GetTokenColor(int ID)
+    {
+        foreach (Transform token in tokenArray)
+        {
+            if (token.GetComponent<Token>().GetID() == ID)
+            {
+                return token.GetComponent<MeshRenderer>().sharedMaterial.color;
+            }
+        }
+
+        return Color.black;
     }
     
 }
