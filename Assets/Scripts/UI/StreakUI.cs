@@ -100,6 +100,13 @@ public class StreakUI : MonoBehaviour
         PlayStreakSFX(isWon);
     }
 
+    public void ResetTokens()
+    {
+        foreach(TokenLightUI l in lightsUI)
+        {
+            l.TurnOn(false);
+        }
+    }
 
 
     private void PlayStreakSFX(bool won)
