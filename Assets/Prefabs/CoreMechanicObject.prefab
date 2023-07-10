@@ -124,6 +124,8 @@ MonoBehaviour:
   - {fileID: -4123457327789643867, guid: c5240cf46093e4eeea44666ac4296a3c, type: 3}
   tokenSpawnMinimumRate: 0.4
   tokenSpawnMaximumRate: 2
+  trendTokenChanceToSpawn: 100
+  spawnByChance: 1
 --- !u!1 &5786518316868444153
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +329,7 @@ GameObject:
   - component: {fileID: 5786518317230032530}
   - component: {fileID: 5786518317230032529}
   - component: {fileID: 5786518317230032528}
-  - component: {fileID: 5786518317230032531}
+  - component: {fileID: 2641656831937808895}
   - component: {fileID: 5786518317230032534}
   - component: {fileID: 5786518317230032535}
   - component: {fileID: 875938448592157158}
@@ -403,19 +405,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5786518317230032531
-SphereCollider:
+--- !u!136 &2641656831937808895
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5786518317230032525}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.49999994
+  m_Height: 1.9999998
+  m_Direction: 1
+  m_Center: {x: 0.000000014901161, y: 0.00000047683716, z: 0}
 --- !u!54 &5786518317230032534
 Rigidbody:
   m_ObjectHideFlags: 0

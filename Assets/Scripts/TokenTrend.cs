@@ -50,9 +50,7 @@ public class TokenTrend : MonoBehaviour
         GenerateFirstTokenStreak();
         GenerateSecondTokenStreak();
 
-        SetTrendStreaksLifeTime();
-
-        GameEvents.OnUpdateCurrentTokenInTrend += UpdateCurrentTokenToGet;
+        //GameEvents.OnUpdateCurrentTokenInTrend += UpdateCurrentTokenToGet;
     }
 
     private int GetRandomLengthForTrendStreak()
@@ -67,6 +65,7 @@ public class TokenTrend : MonoBehaviour
 
     public void GenerateFirstTokenStreak()
     {
+        SetTrendStreaksLifeTime();
         firstTrendStreakList = new List<Token>();
         GenerateTokenStreak(firstTrendStreakList);
         GameObject trendStreakObject = new GameObject("FirstTrendStreak");
@@ -79,6 +78,7 @@ public class TokenTrend : MonoBehaviour
     
     public void GenerateSecondTokenStreak()
     {
+        SetTrendStreaksLifeTime();
         secondTrendStreakList = new List<Token>();
         GenerateTokenStreak(secondTrendStreakList);
         GameObject trendStreakObject = new GameObject("SecondTrendStreak");

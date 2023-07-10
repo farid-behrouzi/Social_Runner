@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using PathCreation;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -48,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.S))
         {
             GameEvents.Call_OnCancelWheelSpeedReduction();
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 

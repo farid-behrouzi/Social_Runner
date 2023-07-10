@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameEvents
 {
@@ -18,6 +19,10 @@ public class GameEvents
     public static Action<int, PlayerTrendFollowState> OnUpdateCurrentTokenInTrend;
 
     public static Token token;
+
+    private static List<Token> firstTrendStreakList;
+    private static List<Token> secondTrendStreakList;
+    private static PlayerTrendFollowState playerTrendFollowState;
 
 
     public static void PlayerHitToken(TrendStreakType trendType, int tokenID)
@@ -83,6 +88,56 @@ public class GameEvents
     public static void Call_OnUpdateCurrentTokenInTrend(int currentTokenCounter, PlayerTrendFollowState playerTrendFollowState)
     {
         OnUpdateCurrentTokenInTrend?.Invoke(currentTokenCounter, playerTrendFollowState);
+    }
+
+
+    public static void SetFirstTrendStreak(List<Token> _firstTrendStreakList) 
+    {
+        firstTrendStreakList = new List<Token>();
+        firstTrendStreakList = _firstTrendStreakList;
+    }
+    
+    public static void SetSecondTrendStreak(List<Token> _secondTrendStreakList) 
+    {
+        secondTrendStreakList = new List<Token>();
+        secondTrendStreakList = _secondTrendStreakList;
+    }
+
+    public static List<Token> GetCurrentTrendStreakList()
+    {
+        switch (playerTrendFollowState)
+        {
+            case PlayerTrendFollowState.Trend1:
+                return firstTrendStreakList;
+            case PlayerTrendFollowState.Trend2:
+                return secondTrendStreakList;
+            case PlayerTrendFollowState.All:
+                return GetCombinationOfTwiTrendsList();
+            case PlayerTrendFollowState.None:
+                return GetCombinationOfTwiTrendsList();
+            default:
+                return GetCombinationOfTwiTrendsList();
+        }
+    }
+
+    public static void SetPlayerTrendFollowState(PlayerTrendFollowState _playerTrendFollowState)
+    {
+        playerTrendFollowState = _playerTrendFollowState;
+    }
+
+    private static List<Token> GetCombinationOfTwiTrendsList()
+    {
+        List<Token> combinationList = new List<Token>();
+        foreach (Token token in firstTrendStreakList)
+        {
+            combinationList.Add(token);
+        }
+        foreach (Token token in secondTrendStreakList)
+        {
+            combinationList.Add(token);
+        }
+        combinationList = combinationList.Distinct().ToList();
+        return combinationList;
     }
 
 }

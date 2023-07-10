@@ -17,6 +17,10 @@ public class TokenSpawn : MonoBehaviour
     private float spawnTimer;
     private float spawnGap;
 
+    [SerializeField] private float trendTokenChanceToSpawn;
+
+    [SerializeField] private bool spawnByChance;
+
 
     private void Awake()
     {
@@ -69,7 +73,7 @@ public class TokenSpawn : MonoBehaviour
         int randomPosIndex = Random.Range(0, spawnPointsArray.Length);
         tokenPosition = spawnPointsArray[randomPosIndex].transform.position;
 
-        GameObject tokenPrefab = tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
+        GameObject tokenPrefab = GetTokenToSpawn();
         Transform token = TokenPool.SpawnToken(tokenPrefab, tokenPosition).transform;
         token.parent = tokenParent;
 
@@ -78,10 +82,25 @@ public class TokenSpawn : MonoBehaviour
         randomPosIndex = Random.Range(0, spawnPointsArray.Length - 1);
         tokenPosition = spawnPointsArray[randomPosIndex].transform.position;
 
-        GameObject secondTokenPrefab = tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
+        GameObject secondTokenPrefab = GetTokenToSpawn();
         Transform secondToken = TokenPool.SpawnToken(secondTokenPrefab, tokenPosition).transform;
-        secondToken.parent = tokenParent;
+        secondToken.parent = tokenParent; 
+    }
 
+    private GameObject GetTokenToSpawn()
+    {
+        if (spawnByChance)
+        {
+            float chance = Random.value;
+            if (chance < trendTokenChanceToSpawn / 100f)
+            {
+                List<Token> currentTrendTokens = GameEvents.GetCurrentTrendStreakList();
+                return currentTrendTokens[Random.Range(0, currentTrendTokens.Count)].gameObject;
+            }
+            return tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
+        }
+        Debug.Log("GetTokenToSpawn");
+        return tokenPrefabList[Random.Range(0, tokenPrefabList.Count)].gameObject;
     }
     
     private void SpawnTokenTest(int index)

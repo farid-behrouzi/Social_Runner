@@ -73,6 +73,15 @@ public class TrendStreak : MonoBehaviour
     {
         this.tokenList = tokenList;
 
+        switch (type)
+        {
+            case TrendStreakType.Type1:
+                GameEvents.SetFirstTrendStreak(tokenList);
+                break;
+            case TrendStreakType.Type2:
+                GameEvents.SetSecondTrendStreak(tokenList);
+                break;
+        }
         UpdateUI();
     }
 
