@@ -17,6 +17,11 @@ public class Token : MonoBehaviour
         return "This is a token with ID: " + GetID();
     }
 
+    public Color GetColorFromMaterial()
+    {
+        return GetComponent<MeshRenderer>().sharedMaterial.color;
+    }
+
     public Color GetColor(TokenTrend token)
     {
         return token.GetTokenColor(ID);
