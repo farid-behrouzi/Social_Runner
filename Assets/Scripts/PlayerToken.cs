@@ -15,6 +15,7 @@ public class PlayerToken : MonoBehaviour
     private int playersSecondTokenCounter;
 
     private PlayerScore playerScore;
+    private bool tokenHitPermission = true;
 
 
     private void Awake()
@@ -27,6 +28,12 @@ public class PlayerToken : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Debug.Log("Start");
         UpdateCurrentTokenToGet(playersFirstTokenCounter > playersSecondTokenCounter ? playersFirstTokenCounter : playersSecondTokenCounter, trendState);
+        GameEvents.OnWheelStopped += () => tokenHitPermission = false;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWheelStopped -= () => tokenHitPermission = false;
     }
 
     public void GrabTheToken(int ID, Token token)
@@ -164,7 +171,7 @@ public class PlayerToken : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("Token"))
+        if (other.tag.Equals("Token") && tokenHitPermission)
         {
             Token token = other.gameObject.GetComponent<Token>();
             GrabTheToken(token.GetID(), token);

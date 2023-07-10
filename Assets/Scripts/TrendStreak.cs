@@ -110,6 +110,7 @@ public class TrendStreak : MonoBehaviour
 
     private void Terminate()
     {
+        GameEvents.OnWheelStopped -= () => enabled = false;
         CancelInvoke(nameof(ReductAttentionPoint));
         switch (type)
         {

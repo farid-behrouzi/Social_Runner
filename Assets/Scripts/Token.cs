@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Token : MonoBehaviour
@@ -11,6 +12,18 @@ public class Token : MonoBehaviour
     //     Material material = gameObject.GetComponent<MeshRenderer>().sharedMaterial;
     //     color = material.color;
     // }
+
+    private void OnEnable()
+    {
+        GameEvents.OnWheelStopped += () => GetComponent<Collider>().enabled = false;
+        GameEvents.OnPlayerHitSideCollider += () => gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWheelStopped -= () => GetComponent<Collider>().enabled = false;
+        GameEvents.OnPlayerHitSideCollider -= () => gameObject.SetActive(false);
+    }
 
     public override string ToString()
     {
