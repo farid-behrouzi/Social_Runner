@@ -24,7 +24,7 @@ public class HitEffect : MonoBehaviour
         if (hitEffectParticleSystem != null && _token != null)
         {
             var main = hitEffectParticleSystem.main;
-            main.startColor = Color.white;
+            main.startColor = _token.GetColorFromMaterial();
             hitEffectParticleSystem.Play();
         }
     }
