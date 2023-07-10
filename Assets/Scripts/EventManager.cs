@@ -10,6 +10,7 @@ public static class EventManager
     public delegate void Delegate_OnHit(Token token);
     public delegate void Delegate_OnTrendChange(bool state);
     public delegate void Delegate_OnLevelUp(int level, int points);
+    public delegate void Delegate_OnScore(int score);
     public static Delegate_OnPing OnPing;
     public static Delegate_OnTakeSnapshot OnTakeSnapshot;
     public static Delegate_OnHit OnHit;
@@ -17,6 +18,9 @@ public static class EventManager
     public static Delegate_OnLevelUp OnLevelUp;
     public static Delegate_General OnEnd;
     public static Delegate_General OnStart;
+    public static Delegate_General OnStopWheel;
+    public static Delegate_General OnSlowWheel;
+    public static Delegate_OnScore OnScore;
 
     public static void Call_OnPing(string labelID)
     {
@@ -52,4 +56,20 @@ public static class EventManager
     {
         OnStart?.Invoke();
     }
+
+    public static void Call_OnSlowpWheel()
+    {
+        OnSlowWheel?.Invoke();
+    }
+
+    public static void Call_OnStopWheel()
+    {
+        OnStopWheel?.Invoke();
+    }
+
+    public static void Call_OnScore(int score)
+    {
+        OnScore?.Invoke(score);
+    }
+
 }

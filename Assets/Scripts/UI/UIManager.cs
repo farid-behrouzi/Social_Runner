@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        EventManager.Call_OnHit(null);
+        //EventManager.Call_OnHit(null);
     }
 
     /// <summary>
@@ -227,7 +227,10 @@ public class UIManager : MonoBehaviour
             if (addedAmount > 0)
             {
                 PopAddedAmountScore(addedAmount);
+                /// bad bad 
+                EventManager.Call_OnScore(totalScore);
             }
+            
         }
     }
 
@@ -241,6 +244,7 @@ public class UIManager : MonoBehaviour
             animator.SetTrigger(fadeTriggerLabel);
             animator.SetBool("Playing", false);
         }
+        EventManager.Call_OnStopWheel();
     }
 
     private void RunEndingCutScene()

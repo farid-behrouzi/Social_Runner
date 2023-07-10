@@ -8,9 +8,11 @@ public class AudioPlayer : MonoBehaviour
 {
     [SerializeField] private AudioSource musicSource = null;
     [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioSource syncSource = null;
 
     [Header("audio clips")]
 
+    [SerializeField] private AudioClip startScreenMusic = null;
     [SerializeField] private AudioClip playingBGMusic = null;
     [SerializeField] private AudioClip stopedWheelBGMusic = null;
     [SerializeField] private AudioClip slowingWheelSound = null;
@@ -20,6 +22,7 @@ public class AudioPlayer : MonoBehaviour
     [SerializeField] private AudioClip levelUp = null;
     [SerializeField] private AudioClip playerSnapshot = null;
     [SerializeField] private AudioClip rivalSnapshot = null;
+    [SerializeField] private AudioClip scoreSound = null;
 
     [Header("settings")]
     [SerializeField] private float musicVolume = 1.0f;
@@ -33,6 +36,9 @@ public class AudioPlayer : MonoBehaviour
         EventManager.OnLevelUp += PlayLevelUp;
         EventManager.OnEnd += PlayEnd;
         EventManager.OnStart += PlayStart;
+        EventManager.OnStopWheel += PlayStopWheel;
+        EventManager.OnSlowWheel += PlaySlowWheel;
+        EventManager.OnScore += PlayScore;
     }
 
     private void OnDisable()
@@ -43,26 +49,9 @@ public class AudioPlayer : MonoBehaviour
         EventManager.OnLevelUp -= PlayLevelUp;
         EventManager.OnEnd -= PlayEnd;
         EventManager.OnStart -= PlayStart;
-    }
-
-    private void PlayStart()
-    {
-        PlayMusic(playingBGMusic);
-    }
-
-    private void PlayEnd()
-    {
-        PlayMusic(stopedWheelBGMusic);
-    }
-
-    private void PlayLevelUp(int level, int points)
-    {
-        PlaySFX(levelUp);
-    }
-
-    private void PlayHit(Token _token)
-    {
-        PlaySFX(hitSingleTokenSFX);
+        EventManager.OnStopWheel -= PlayStopWheel;
+        EventManager.OnSlowWheel -= PlaySlowWheel;
+        EventManager.OnScore += PlayScore;
     }
 
     private void Awake()
@@ -86,8 +75,47 @@ public class AudioPlayer : MonoBehaviour
             sfxSource.clip = null;
             sfxSource.playOnAwake = false;
         }
+
+        if (syncSource == null && !this.gameObject.TryGetComponent(out syncSource))
+        {
+            Debug.LogError("no audio source found in Audio Manager");
+        }
+        else
+        {
+            syncSource.clip = null;
+            syncSource.playOnAwake = false;
+        }
     }
 
+    private void Start()
+    {
+        PlayMenu();
+    }
+
+    private void PlayMenu()
+    {
+        PlayMusic(startScreenMusic);
+    }
+
+    private void PlayStart()
+    {
+        PlayMusic(playingBGMusic);
+    }
+
+    private void PlayEnd()
+    {
+        PlayMusic(stopedWheelBGMusic);
+    }
+
+    private void PlayLevelUp(int level, int points)
+    {
+        PlaySyncedSFX(levelUp);
+    }
+
+    private void PlayHit(Token _token)
+    {
+        PlaySFX(hitSingleTokenSFX);
+    }
 
 
     private void PlayTrendChange(bool state)
@@ -97,8 +125,24 @@ public class AudioPlayer : MonoBehaviour
 
     private void PlaySnapshot(bool isPlayer)
     {
-        PlaySFX(isPlayer ? playerSnapshot : rivalSnapshot);
+        PlaySyncedSFX(isPlayer ? playerSnapshot : rivalSnapshot);
 
+    }
+
+    private void PlaySlowWheel()
+    {
+        PlaySyncedSFX(slowingWheelSound);
+    }
+
+    private void PlayStopWheel()
+    {
+        PlayMusic(stopedWheelBGMusic);
+    }
+
+
+    private void PlayScore(int score)
+    {
+        PlaySyncedSFX(scoreSound);
     }
 
 
@@ -130,5 +174,17 @@ public class AudioPlayer : MonoBehaviour
             }
         }
     }
-
+    private void PlaySyncedSFX(AudioClip _clip)
+    {
+        if (syncSource)
+        {
+            syncSource.Stop();
+            syncSource.volume = sfxVolume;
+            if (_clip)
+            {
+                syncSource.clip = _clip;
+                syncSource.Play();
+            }
+        }
+    }
 }

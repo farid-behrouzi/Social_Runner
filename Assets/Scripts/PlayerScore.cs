@@ -62,12 +62,13 @@ public class PlayerScore : MonoBehaviour
     {
         int i = 1;
         float c = nextBadgeThreshold * 1.4f;
-        while (c % 10 > 10)
+        while (c % 10 > 100)
         {
             i++;
             c /= 10;
-        }  
-        nextBadgeThreshold = Mathf.FloorToInt(nextBadgeThreshold * 1.4f / (10 * i)) * (10 * i);
+        }
+        int m = (int)MathF.Pow(10, i);
+        nextBadgeThreshold = (Mathf.FloorToInt(nextBadgeThreshold * 1.4f / m) * m);
         playerBadge++;
         GameEvents.Call_OnplayerBadgeUpUIUpdate(playerBadge, playerPoint);
     }
