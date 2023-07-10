@@ -239,6 +239,7 @@ public class UIManager : MonoBehaviour
         if (animator)
         {
             animator.SetTrigger(fadeTriggerLabel);
+            animator.SetBool("Playing", false);
         }
     }
 
@@ -353,6 +354,17 @@ public class UIManager : MonoBehaviour
         return false;
     }
 
+    public void Exit()
+    {
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+
+    }
+
     #endregion
 
     #region Debug Methods
@@ -420,7 +432,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
 
 }
