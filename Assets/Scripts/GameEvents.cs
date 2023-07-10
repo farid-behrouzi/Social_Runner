@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GameEvents
 {
@@ -16,7 +17,9 @@ public class GameEvents
     public static Action OnTrendIsGone;
     public static Action OnStopWheelSmoothly;
     public static Action OnCancelWheelReduction;
+    public static Action OnWheelStopped;
     public static Action<int, PlayerTrendFollowState> OnUpdateCurrentTokenInTrend;
+    public static Action OnPlayerHitSideCollider;
 
     public static Token token;
 
@@ -55,7 +58,7 @@ public class GameEvents
         OnPlayerCompletedTrend?.Invoke(playerPoint);
     }
 
-    public static void Call_OnPlayerLevelUpUIUpdate(int level, int points)
+    public static void Call_OnplayerBadgeUpUIUpdate(int level, int points)
     {
         OnPlayerLevelUpUIUpdate?.Invoke(level, points);
     }
@@ -138,6 +141,17 @@ public class GameEvents
         }
         combinationList = combinationList.Distinct().ToList();
         return combinationList;
+    }
+
+    public static void Call_OnPlayerHitSideCollider()
+    {
+        OnPlayerHitSideCollider?.Invoke();
+    }
+
+    public static void Call_OnWheelStopped()
+    {
+        Debug.Log("Call_OnWheelStopped");
+        OnWheelStopped?.Invoke();
     }
 
 }

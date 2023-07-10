@@ -29,7 +29,7 @@ public class TokenSpawn : MonoBehaviour
 
     private void Start()
     {
-        //InvokeRepeating(nameof(SpawnToken), 1, 1);
+        GameEvents.OnWheelStopped += () => enabled = false;
     }
 
     private void Update()

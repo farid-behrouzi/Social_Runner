@@ -171,5 +171,10 @@ public class PlayerToken : MonoBehaviour
             EventManager.Call_OnHit(token);
             //Debug.Break();
         }
+
+        if (other.tag.Equals("SideCollider"))
+        {
+            GameEvents.Call_OnPlayerHitSideCollider();
+        }
     }
 }

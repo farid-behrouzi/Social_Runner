@@ -39,6 +39,8 @@ public class UIManager : MonoBehaviour
         GameEvents.OnPlayerCompletedTrend += TakePlayerSnapshot;
         GameEvents.OnPlayerLevelUpUIUpdate += LevelUpUI;
         GameEvents.OnTrendIsGone += LeftBehindUI;
+        GameEvents.OnWheelStopped += FadeUIAway;
+        GameEvents.OnPlayerHitSideCollider += RunEndingCutScene;
     }
     private void OnDisable()
     {
@@ -49,6 +51,8 @@ public class UIManager : MonoBehaviour
         GameEvents.OnPlayerCompletedTrend -= TakePlayerSnapshot;
         GameEvents.OnPlayerLevelUpUIUpdate -= LevelUpUI;
         GameEvents.OnTrendIsGone -= LeftBehindUI;
+        GameEvents.OnWheelStopped -= FadeUIAway;
+        GameEvents.OnPlayerHitSideCollider -= RunEndingCutScene;
     }
 
     private void Awake()
@@ -230,7 +234,7 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// runs in game menu UI wipe out animation 
     /// </summary>
-    public void FadeUIAway()
+    private void FadeUIAway()
     {
         if (animator)
         {
@@ -238,7 +242,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void RunEndingCutScene()
+    private void RunEndingCutScene()
     {
         if (director)
         {

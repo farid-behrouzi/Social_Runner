@@ -18,7 +18,6 @@ public class PlayerScore : MonoBehaviour
     private bool rivalSnapshotPermission = false;
     private const int tokenDefaultPoint = 20;
     private int nextBadgeThreshold = 50;
-    private int playerLevel = 1;
     private int playerBadge = 1;
 
     private void Awake()
@@ -36,8 +35,14 @@ public class PlayerScore : MonoBehaviour
     private void Start()
     {
         GameEvents.OnPointReduction += AttentionPointReduction;
-        GameEvents.Call_OnPlayerLevelUpUIUpdate(playerBadge, playerPoint);
+        GameEvents.OnWheelStopped += ()=> enabled = false;
+        GameEvents.Call_OnplayerBadgeUpUIUpdate(playerBadge, playerPoint);
         //InvokeRepeating(nameof(AttentionPointReduction), 0f, pointReductionRate);
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWheelStopped -= ()=> enabled = false;
     }
 
     private void Update()
@@ -56,28 +61,28 @@ public class PlayerScore : MonoBehaviour
     private void CalculateNextThreshold()
     {
         int i = 1;
-        float c = playerLevel * 1.4f;
+        float c = nextBadgeThreshold * 1.4f;
         while (c % 10 > 10)
         {
             i++;
             c /= 10;
         }  
-        nextBadgeThreshold = Mathf.FloorToInt(playerLevel * 1.4f / (10 * i)) * (10 * i);
+        nextBadgeThreshold = Mathf.FloorToInt(nextBadgeThreshold * 1.4f / (10 * i)) * (10 * i);
         playerBadge++;
-        GameEvents.Call_OnPlayerLevelUpUIUpdate(playerBadge, playerPoint);
+        GameEvents.Call_OnplayerBadgeUpUIUpdate(playerBadge, playerPoint);
     }
 
     public void UpdatePoint()
     {
-        playerPoint += (playerLevel * (playerLevel + 1));
-        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerLevel * (playerLevel + 1)));
+        playerPoint += (playerBadge * (playerBadge + 1));
+        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerBadge * (playerBadge + 1)));
     }
 
     public void UpdatePointOnTrendCompletion(int lights)
     {
-        playerPoint += (playerLevel * (playerLevel * lights));
-        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerLevel * (playerLevel * lights)));
-        playerLevel++;
+        playerPoint += (playerBadge * (playerBadge * lights));
+        GameEvents.PlayerScoreUIUpdate(playerPoint, (playerBadge * (playerBadge * lights)));
+        playerBadge++;
         GameEvents.Call_OnPlayerCompletedTrend(playerPoint);
     }
 

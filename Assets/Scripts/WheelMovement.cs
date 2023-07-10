@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -54,6 +53,8 @@ public class WheelMovement : MonoBehaviour
         
         GameEvents.OnCancelWheelReduction -= CancelSpeedReduction;
         rotationSpeed = endValue;
+        Debug.Log("StopWheelSmoothlyCoroutine");
+        GameEvents.Call_OnWheelStopped();
         StopCoroutine(nameof(StopWheelSmoothlyCoroutine));
     }
 }

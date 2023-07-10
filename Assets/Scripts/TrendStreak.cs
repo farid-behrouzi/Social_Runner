@@ -18,6 +18,8 @@ public class TrendStreak : MonoBehaviour
 
     private void Start()
     {
+        GameEvents.OnWheelStopped += () => enabled = false;
+        
         switch (type)
         {
             case TrendStreakType.Type1:
@@ -29,6 +31,11 @@ public class TrendStreak : MonoBehaviour
         }
 
         InvokeRepeating(nameof(ReductAttentionPoint), 0f, 1f);
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWheelStopped -= () => enabled = false;
     }
 
     // Update is called once per frame
