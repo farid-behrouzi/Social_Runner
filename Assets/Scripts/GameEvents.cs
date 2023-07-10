@@ -150,7 +150,6 @@ public class GameEvents
 
     public static void Call_OnWheelStopped()
     {
-        Debug.Log("Call_OnWheelStopped");
         OnWheelStopped?.Invoke();
     }
 

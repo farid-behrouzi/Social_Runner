@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using PathCreation;
@@ -17,10 +18,20 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private AnimationCurve hightCurve;
 
+    private bool limitMovement = false;
+
 
     private void Start()
     {
         positionDelta = movementPath.path.length / 2f;
+        GameEvents.OnWheelStopped += () => limitMovement = true;
+        GameEvents.OnPlayerHitSideCollider += () => enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWheelStopped -= () => limitMovement = true;
+        GameEvents.OnPlayerHitSideCollider -= () => enabled = false;
     }
 
     private void Update()
@@ -32,6 +43,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             Move(false);   
+        }
+
+        if (limitMovement)
+        {
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
@@ -51,10 +67,10 @@ public class PlayerMovement : MonoBehaviour
             GameEvents.Call_OnCancelWheelSpeedReduction();
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        // if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // }
     }
 
 

@@ -35,26 +35,26 @@ public class TokenSpawn : MonoBehaviour
     private void Update()
     {
         SpawnTimer();
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            SpawnTokenTest(0);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            SpawnTokenTest(1);
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SpawnTokenTest(2);
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            SpawnTokenTest(3);
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnTokenTest(4);
-        }
+        // if (Input.GetKeyDown(KeyCode.Z))
+        // {
+        //     SpawnTokenTest(0);
+        // }
+        // if (Input.GetKeyDown(KeyCode.X))
+        // {
+        //     SpawnTokenTest(1);
+        // }
+        // if (Input.GetKeyDown(KeyCode.C))
+        // {
+        //     SpawnTokenTest(2);
+        // }
+        // if (Input.GetKeyDown(KeyCode.V))
+        // {
+        //     SpawnTokenTest(3);
+        // }
+        // if (Input.GetKeyDown(KeyCode.B))
+        // {
+        //     SpawnTokenTest(4);
+        // }
     }
 
     private void Initialize()
