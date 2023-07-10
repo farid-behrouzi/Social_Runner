@@ -148,7 +148,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        EventManager.Call_OnHit();
+        EventManager.Call_OnHit(null);
     }
 
     /// <summary>
@@ -384,7 +384,7 @@ public class UIManager : MonoBehaviour
             ResetTrend(TrendStreakType.Type1, true);
             SimulateSetNextNewTrend();
         }
-        EventManager.Call_OnHit();
+        EventManager.Call_OnHit(null);
     }
 
     public void SimulateSetNextNewTrend()

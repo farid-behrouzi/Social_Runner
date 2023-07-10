@@ -7,7 +7,7 @@ public static class EventManager
     public delegate void Delegate_General();
     public delegate void Delegate_OnPing(string labelID);
     public delegate void Delegate_OnTakeSnapshot(bool isPlayer);
-    public delegate void Delegate_OnHit(/*TokenData _token*/);
+    public delegate void Delegate_OnHit(Token token);
     public delegate void Delegate_OnTrendChange(bool state);
     public delegate void Delegate_OnLevelUp(int level, int points);
     public static Delegate_OnPing OnPing;
@@ -28,9 +28,9 @@ public static class EventManager
         OnTakeSnapshot?.Invoke(isPlayer);
     }
 
-    public static void Call_OnHit()
+    public static void Call_OnHit(Token token)
     {
-        OnHit?.Invoke();
+        OnHit?.Invoke(token);
     }
 
     public static void Call_OnTrendChange(bool state)

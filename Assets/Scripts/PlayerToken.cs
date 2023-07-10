@@ -168,6 +168,7 @@ public class PlayerToken : MonoBehaviour
         {
             Token token = other.gameObject.GetComponent<Token>();
             GrabTheToken(token.GetID(), token);
+            EventManager.Call_OnHit(token);
             //Debug.Break();
         }
     }
