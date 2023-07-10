@@ -55,7 +55,7 @@ public class PlayerScore : MonoBehaviour
 
     private void CalculateNextThreshold()
     {
-        int i = 0;
+        int i = 1;
         float c = playerLevel * 1.4f;
         while (c % 10 > 10)
         {

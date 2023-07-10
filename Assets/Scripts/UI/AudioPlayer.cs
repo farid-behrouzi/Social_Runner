@@ -60,7 +60,7 @@ public class AudioPlayer : MonoBehaviour
         PlaySFX(levelUp);
     }
 
-    private void PlayHit()
+    private void PlayHit(Token _token)
     {
         PlaySFX(hitSingleTokenSFX);
     }
