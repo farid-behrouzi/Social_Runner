@@ -28,6 +28,12 @@ public class AudioPlayer : MonoBehaviour
     [SerializeField] private float musicVolume = 1.0f;
     [SerializeField] private float sfxVolume = 1.0f;
 
+
+    /// Temp  
+    private bool slowing = false;
+    private float slowingLifeTime = 10.0f;
+    private float slowingTimer = 10.0f;
+
     private void OnEnable()
     {
         EventManager.OnTakeSnapshot += PlaySnapshot;
@@ -37,8 +43,9 @@ public class AudioPlayer : MonoBehaviour
         EventManager.OnEnd += PlayEnd;
         EventManager.OnStart += PlayStart;
         EventManager.OnStopWheel += PlayStopWheel;
-        EventManager.OnSlowWheel += PlaySlowWheel;
+        GameEvents.OnStopWheelSmoothly += PlaySlowWheel;
         EventManager.OnScore += PlayScore;
+        GameEvents.OnCancelWheelReduction += StopWheelSFX;
     }
 
     private void OnDisable()
@@ -50,8 +57,9 @@ public class AudioPlayer : MonoBehaviour
         EventManager.OnEnd -= PlayEnd;
         EventManager.OnStart -= PlayStart;
         EventManager.OnStopWheel -= PlayStopWheel;
-        EventManager.OnSlowWheel -= PlaySlowWheel;
-        EventManager.OnScore += PlayScore;
+        GameEvents.OnStopWheelSmoothly -= PlaySlowWheel;
+        EventManager.OnScore -= PlayScore;
+        GameEvents.OnCancelWheelReduction -= StopWheelSFX;
     }
 
     private void Awake()
@@ -131,7 +139,12 @@ public class AudioPlayer : MonoBehaviour
 
     private void PlaySlowWheel()
     {
-        PlaySyncedSFX(slowingWheelSound);
+        slowing = true;
+    }
+
+    private void StopWheelSFX() 
+    {
+        slowing = false;
     }
 
     private void PlayStopWheel()
@@ -184,6 +197,28 @@ public class AudioPlayer : MonoBehaviour
             {
                 syncSource.clip = _clip;
                 syncSource.Play();
+            }
+        }
+    }
+
+    /// temp
+    private void Update()
+    {
+        if (slowing)
+        {
+            if (slowingTimer <= 0)
+            {
+                musicSource.pitch = 1;
+                slowing = false;
+                slowingTimer = slowingLifeTime;
+            }
+            else
+            {
+                if (musicSource)
+                {
+                    musicSource.pitch = Mathf.Clamp01( slowingTimer / slowingLifeTime);
+                }
+                slowingTimer -= Time.deltaTime;
             }
         }
     }
