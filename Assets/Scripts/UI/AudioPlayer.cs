@@ -144,7 +144,9 @@ public class AudioPlayer : MonoBehaviour
 
     private void StopWheelSFX() 
     {
+        musicSource.pitch = 1;
         slowing = false;
+        slowingTimer = slowingLifeTime;
     }
 
     private void PlayStopWheel()
@@ -208,9 +210,7 @@ public class AudioPlayer : MonoBehaviour
         {
             if (slowingTimer <= 0)
             {
-                musicSource.pitch = 1;
-                slowing = false;
-                slowingTimer = slowingLifeTime;
+                StopWheelSFX();
             }
             else
             {
