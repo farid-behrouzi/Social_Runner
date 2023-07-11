@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             GameEvents.Call_OnStopWheelSmoothly();
         }
         
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
         {
             GameEvents.Call_OnCancelWheelSpeedReduction();
         }
