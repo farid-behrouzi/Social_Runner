@@ -4629,6 +4629,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 936574219151157601, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 936574219151157601, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
+        type: 3}
       propertyPath: m_fontColor.a
       value: 0
       objectReference: {fileID: 0}
@@ -4741,6 +4746,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RivalSnapshot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262979407984037561, guid: fd02d6f6c1f942c44aa2f96b8532e3ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd02d6f6c1f942c44aa2f96b8532e3ef, type: 3}

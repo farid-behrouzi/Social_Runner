@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelTmp = null;
     [SerializeField] private PlayableDirector director = null;
     public AudioPlayer audioPlayer = null;
-
+    public static bool won = false;
 
     private void OnEnable()
     {
@@ -108,7 +108,12 @@ public class UIManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Application.OpenURL("https://socialmediavictims.org/social-media-addiction/effects");
+        string url = "https://forms.gle/2bXjhq7gHJeRUrhX7";
+        if (won)
+        {
+            url = "https://forms.gle/AdcegQWc1xUyMCMe6";
+        }
+        Application.OpenURL(url);
     }
 
     #region Public Methods
@@ -302,6 +307,11 @@ public class UIManager : MonoBehaviour
     public void EndGame()
     {
         FadeUIAway();
+    }
+
+    public void Won()
+    {
+        won = true;
     }
 
     /// <summary>
