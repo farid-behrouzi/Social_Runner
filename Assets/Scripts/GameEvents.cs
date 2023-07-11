@@ -27,6 +27,9 @@ public class GameEvents
     private static List<Token> secondTrendStreakList;
     private static PlayerTrendFollowState playerTrendFollowState;
 
+    public static float firstTrendLifeTime;
+    public static float secondTrendLifeTime;
+
 
     public static void PlayerHitToken(TrendStreakType trendType, int tokenID)
     {

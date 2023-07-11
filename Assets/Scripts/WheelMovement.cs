@@ -10,10 +10,12 @@ public class WheelMovement : MonoBehaviour
 
     private float endValue;
 
+    private float rangedSpeed = 1f;
+
 
     private void Awake()
     {
-        startValue = rotationSpeed;
+        startValue = rangedSpeed;
         endValue = 0;
     }
 
@@ -26,7 +28,7 @@ public class WheelMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate (Vector3.right * rotationSpeed * Time.deltaTime, Space.Self);
+        transform.Rotate (Vector3.right * rotationSpeed * rangedSpeed * Time.deltaTime, Space.Self);
     }
 
     private void CancelSpeedReduction()
@@ -46,13 +48,13 @@ public class WheelMovement : MonoBehaviour
         
         while (elapsedTime < 10f)
         {
-            rotationSpeed = Mathf.Lerp(startValue, endValue, elapsedTime / 10f);
+            rangedSpeed = Mathf.Lerp(startValue, endValue, elapsedTime / 10f);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         
         GameEvents.OnCancelWheelReduction -= CancelSpeedReduction;
-        rotationSpeed = endValue;
+        rangedSpeed = endValue;
         Debug.Log("StopWheelSmoothlyCoroutine");
         GameEvents.Call_OnWheelStopped();
         StopCoroutine(nameof(StopWheelSmoothlyCoroutine));

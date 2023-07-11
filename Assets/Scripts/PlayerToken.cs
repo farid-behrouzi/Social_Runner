@@ -26,7 +26,6 @@ public class PlayerToken : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("Start");
         UpdateCurrentTokenToGet(playersFirstTokenCounter > playersSecondTokenCounter ? playersFirstTokenCounter : playersSecondTokenCounter, trendState);
         GameEvents.OnWheelStopped += () => tokenHitPermission = false;
     }

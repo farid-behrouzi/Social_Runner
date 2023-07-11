@@ -28,6 +28,9 @@ public class TokenTrend : MonoBehaviour
     private float firstTrendStreakTimer;
     private float secondTrendStreakTimer;
 
+    private TrendStreak firstTrendStreak;
+    private TrendStreak secondTrendStreak;
+
 
     public Action OnFirstTokenStreakCompleted;
     public Action OnSecondTokenStreakCompleted;
@@ -50,7 +53,13 @@ public class TokenTrend : MonoBehaviour
         GenerateFirstTokenStreak();
         GenerateSecondTokenStreak();
 
+        //GameEvents.OnWheelStopped += DisableTrendStreaks;
         //GameEvents.OnUpdateCurrentTokenInTrend += UpdateCurrentTokenToGet;
+    }
+
+    private void OnDisable()
+    {
+        //GameEvents.OnWheelStopped -= DisableTrendStreaks;
     }
 
     private int GetRandomLengthForTrendStreak()
@@ -61,6 +70,12 @@ public class TokenTrend : MonoBehaviour
     private Token GetRandomTokenForTrendStreak()
     {
         return tokenArray[Random.Range(0, tokenArray.Length)].GetComponent<Token>();
+    }
+
+    private void DisableTrendStreaks()
+    {
+        firstTrendStreak.enabled = false;
+        secondTrendStreak.enabled = false;
     }
 
     public void GenerateFirstTokenStreak()
