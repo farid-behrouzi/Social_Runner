@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.PlayerLoop;
 
 public class UIManager : MonoBehaviour
 {
@@ -79,6 +81,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     private void PopScore(int _score, Vector3 _position)
     {
         if (scorePopupPrefab != null)
@@ -100,6 +103,12 @@ public class UIManager : MonoBehaviour
                 animator.SetTrigger(addAmountLabel);
             }
         }
+    }
+
+
+    private void OnApplicationQuit()
+    {
+        Application.OpenURL("https://socialmediavictims.org/social-media-addiction/effects");
     }
 
     #region Public Methods
@@ -375,13 +384,16 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if (debugPanel)
-            {
-                debugPanel.gameObject.SetActive(!debugPanel.gameObject.activeSelf);
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.U))
+        //{
+        //    if (debugPanel)
+        //    {
+        //        debugPanel.gameObject.SetActive(!debugPanel.gameObject.activeSelf);
+        //    }
+        //}
+
+        trendLeft.UpdateTimer(GameEvents.firstTrendLifeTime);
+        trendRight.UpdateTimer(GameEvents.secondTrendLifeTime);
     }
 
     public void SimulateNewTrend()
@@ -436,7 +448,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-#endregion
-
+    #endregion
 
 }

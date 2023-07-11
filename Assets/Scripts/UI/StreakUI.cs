@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StreakUI : MonoBehaviour
 {
@@ -12,11 +13,25 @@ public class StreakUI : MonoBehaviour
     [SerializeField] private AudioSource audioSource = null;
     [SerializeField] private AudioClip correctStreakSFX = null;
     [SerializeField] private AudioClip wrongStreakSFX = null;
+    [SerializeField] private UnityEngine.UI.Image timerBarImage = null;
 
     private List<Light> nextQueue = null;
 
     [SerializeField] private bool isAnimPlay = false;
 
+
+    public void UpdateTimer(float _time = 0)
+    {
+        float progress = _time;
+        if (_time < 0 && _time > 1)
+        {
+            progress = 0;
+        }
+        if (timerBarImage)
+        {
+            timerBarImage.fillAmount = progress;
+        }
+    }
     public void CreateNewStreak(List<Light> _lights)
     {
         nextQueue = _lights;
