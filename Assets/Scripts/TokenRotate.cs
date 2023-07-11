@@ -8,6 +8,8 @@ public class TokenRotate : MonoBehaviour
     private float startValue;
 
     private float endValue;
+    
+    [SerializeField] private float stopTime;
 
 
     private void Awake()
@@ -45,7 +47,7 @@ public class TokenRotate : MonoBehaviour
     {
         float elapsedTime = 0f;
         
-        while (elapsedTime < 10f)
+        while (elapsedTime < stopTime)
         {
             rotationSpeed = Mathf.Lerp(startValue, endValue, elapsedTime / 10f);
             elapsedTime += Time.deltaTime;

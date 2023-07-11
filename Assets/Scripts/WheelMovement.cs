@@ -12,9 +12,13 @@ public class WheelMovement : MonoBehaviour
 
     private float rangedSpeed = 1f;
 
+    [SerializeField] private float stopTime;
+    private float defaultRotationSpeed;
+
 
     private void Awake()
     {
+        defaultRotationSpeed = rotationSpeed;
         startValue = rangedSpeed;
         endValue = 0;
     }
@@ -34,7 +38,8 @@ public class WheelMovement : MonoBehaviour
     private void CancelSpeedReduction()
     {
         StopCoroutine(nameof(StopWheelSmoothlyCoroutine));
-        rotationSpeed = startValue;
+        rotationSpeed = defaultRotationSpeed;
+        rangedSpeed = 1;
     }
 
     private void StopWheelSmoothly()
@@ -46,7 +51,7 @@ public class WheelMovement : MonoBehaviour
     {
         float elapsedTime = 0f;
         
-        while (elapsedTime < 10f)
+        while (elapsedTime < stopTime)
         {
             rangedSpeed = Mathf.Lerp(startValue, endValue, elapsedTime / 10f);
             elapsedTime += Time.deltaTime;

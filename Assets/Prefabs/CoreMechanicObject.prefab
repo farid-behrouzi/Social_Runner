@@ -5714,6 +5714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 90
+  stopTime: 10
 --- !u!1 &7548160261225344136
 GameObject:
   m_ObjectHideFlags: 0
@@ -6023,6 +6024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 50
+  stopTime: 10
 --- !u!1 &9099294291488505331
 GameObject:
   m_ObjectHideFlags: 0
